@@ -13,4 +13,5 @@ module.exports.open = (uri) => {
 
   // load models
   require('./user');
+  require('./poll');
 };

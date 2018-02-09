@@ -1,4 +1,4 @@
 {
-  "dbUri": "mongodb://localhost/react_app",
+  "dbUri": "mongodb://192.168.99.100/react_app",
   "jwtSecret": "D3YeY4EVPX64tI7"
 }
