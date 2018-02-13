@@ -19,7 +19,8 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 // tell the app to parse HTTP body messages
-app.use(bodyParser.urlencoded({ extended: false, type: () => true }));
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 // pass the passport middleware
 app.use(passport.initialize());
 
@@ -38,9 +39,11 @@ app.use('/api', authCheckMiddleware);
 // Set up routes
 const authRoutes = require('./routes/auth');
 const apiRoutes = require('./routes/api');
+const pollRoutes = require('./routes/polls');
 
 app.use('/auth', authRoutes);
 app.use('/api', apiRoutes);
+app.use('/api', pollRoutes);
 
 app.listen(app.get('port'), () => {
   console.log(`Find the server at: http://localhost:${app.get('port')}/`); // eslint-disable-line no-console
