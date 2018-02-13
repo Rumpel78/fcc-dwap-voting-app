@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const PollSchema = new mongoose.Schema({
   name: String,
   createdBy: String,
-  options: [ { optionName: String, optionCount: Number } ],
+  options: [ { name: String, count: Number } ],
 });
 
 module.exports = mongoose.model('Poll', PollSchema);
