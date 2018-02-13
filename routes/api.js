@@ -1,5 +1,4 @@
 const express = require('express');
-const Poll = require('mongoose').model('Poll');
 
 const router = new express.Router();
 
