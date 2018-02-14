@@ -32,7 +32,14 @@ class LoginPage extends React.Component {
     const password = encodeURIComponent(this.state.user.password);
     const formData = `email=${email}&password=${password}`;
 
-    fetch('/auth/login', { method: 'POST', body: formData }).then((response) => {
+    fetch('/auth/login', {
+      method: 'POST',
+      body: formData,
+      headers: {
+        'Accept': 'application/json, application/xml, text/play, text/html, *.*',
+        'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
+      },
+    }).then((response) => {
       if (response.status === 200) {
         this.setState({ errors: {} });
       }

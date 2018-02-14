@@ -41,7 +41,14 @@ class SignUpPage extends React.Component {
     const formData = `name=${name}&email=${email}&password=${password}`;
 
     // fetch response
-    fetch('/auth/signup', { method: 'POST', body: formData }).then((response) => {
+    fetch('/auth/signup', {
+      method: 'POST',
+      body: formData,
+      headers: {
+        'Accept': 'application/json, application/xml, text/play, text/html, *.*',
+        'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
+      },
+    }).then((response) => {
       if (response.status === 200) {
         this.setState({ errors: {} });
       }
