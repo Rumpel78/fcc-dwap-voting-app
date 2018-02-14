@@ -38,7 +38,7 @@ router.get('/polls', (req, res) => {
   Poll.find({}, (err, polls) => {
     res.status(200).json({
       message: 'Current polls',
-      polls: JSON.stringify(polls),
+      polls,
     });
   });
 });
@@ -47,7 +47,7 @@ router.get('/polls/:pollid', (req, res) => {
   Poll.findById(req.params.pollId, (err, poll) => {
     res.status(200).json({
       message: `Poll with id ${req.params.pollId}`,
-      polls: JSON.stringify(poll),
+      poll,
     });
   });
 });

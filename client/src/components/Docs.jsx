@@ -6,7 +6,7 @@ const Docs = () => (
     <Button
       bsStyle='success'
       bsSize='large'
-      href='http://react-bootstrap.github.io/components.html'
+      href='http://react-bootstrap.github.io/components/alerts/'
       target='_blank'
     >
       View React Bootstrap Docs

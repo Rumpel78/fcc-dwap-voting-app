@@ -46,7 +46,7 @@ class SignUpPage extends React.Component {
       body: formData,
       headers: {
         'Accept': 'application/json, application/xml, text/play, text/html, *.*',
-        'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
+        'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
       },
     }).then((response) => {
       if (response.status === 200) {

@@ -14,6 +14,8 @@ import LoggedInSplash from './components/LoggedInSplash';
 import LoginPage from './containers/LoginPage';
 import SignUpPage from './containers/SignUpPage';
 import Authorization from './containers/Authorization';
+import PollListPage from './containers/PollListPage';
+import PollPage from './containers/PollPage';
 
 import logo from './logo.svg';
 import './style.css';
@@ -51,6 +53,7 @@ class App extends React.Component {
                 <LinkContainer to='/about'><NavItem eventKey={1}>About</NavItem></LinkContainer>
                 <LinkContainer to='/broken'><NavItem eventKey={2}>Broken</NavItem></LinkContainer>
                 <LinkContainer to='/docs'><NavItem eventKey={2}>Docs</NavItem></LinkContainer>
+                <LinkContainer to='/polls'><NavItem eventKey={2}>Polls</NavItem></LinkContainer>
                 {Auth.isUserAuthenticated() && <LinkContainer to='/onlyForAuth'><NavItem eventKey={2}>Secret</NavItem></LinkContainer>}
               </Nav>
               <Nav pullRight>
@@ -64,11 +67,13 @@ class App extends React.Component {
             <Route exact path='/' render={() => <Welcome user={this.state.user} />} />
             <Route exact path='/about' component={About} />
             <Route exact path='/docs' component={Docs} />
+            <Route exact path='/polls' component={PollListPage} />
             <Route exact path='/onlyForAuth' component={AuthFilter(OnlyForAuth)} />
             <Route exact path='/login' render={() => <LoginPage onSuccess={this.userLoggedIn} />} />
             <Route exact path='/logout' component={Logout} />
             <Route exact path='/signup' component={SignUpPage} />
             <Route exact path='/loggedinsplash' component={LoggedInSplash} />
+            <Route path='/poll' components={PollPage} />
             <Route component={NotFound} />
           </Switch>
         </Grid>
