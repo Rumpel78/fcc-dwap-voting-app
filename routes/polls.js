@@ -52,17 +52,21 @@ router.get('/polls/:pollid', (req, res) => {
   });
 });
 
-router.put('/polls/:pollid', (req, res) => {
+router.put('/polls/:pollid/:option', (req, res) => {
   Poll.findById(req.params.pollid, (err, poll) => {
     if (err) {
       return res.send(err);
     }
-    poll.name = req.body.name;
+    poll.options.forEach((option) => {
+      if (option.name === req.params.option) {
+        option.count += 1;
+      }
+    });
     poll.save((err) => {
       if (err) {
         return res.send(err);
       }
-      return res.json({ message: `Poll ${req.params.pollId} updated!` });
+      return res.json({ message: 'Poll updated!' });
     });
   });
 });
@@ -101,4 +105,3 @@ router.delete('/polls/:pollId', (req, res) => {
 });
 
 module.exports = router;
-
