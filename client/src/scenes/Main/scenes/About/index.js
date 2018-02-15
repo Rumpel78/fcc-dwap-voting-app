@@ -1,4 +1,3 @@
-// src/components/About/index.js
 import React from 'react';
 
 const About = () => (

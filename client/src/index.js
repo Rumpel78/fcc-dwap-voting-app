@@ -4,7 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.css';
 // import fetch from 'whatwg-fetch';
 
-import App from './app';
+import Main from './scenes/Main';
 import registerServiceWorker from './registerServiceWorker';
 
 // fetch('/api/food?q=aa')
@@ -14,7 +14,7 @@ import registerServiceWorker from './registerServiceWorker';
 
 ReactDOM.render(
   <BrowserRouter>
-    <App />
+    <Main />
   </BrowserRouter>
   , document.getElementById('root'),
 );

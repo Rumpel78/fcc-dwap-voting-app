@@ -1,6 +1,6 @@
 // src/components/NotFound/index.js
 import React from 'react';
-import PollListItem from './PollListItem';
+import PollListItem from './components/PollListItem';
 
 const PollList = props => (
   <div>
