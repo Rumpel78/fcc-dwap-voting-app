@@ -2,7 +2,7 @@ import { Nav, NavItem, Grid, Navbar } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import { Link, Route, Switch } from 'react-router-dom';
 import React from 'react';
-import Auth from '../../services/Auth';
+// import Auth from '../../services/Auth';
 
 import Home from './scenes/Home';
 import NotFound from './scenes/NotFound';

@@ -1,4 +1,5 @@
-// src/components/NotFound/index.js
+/* eslint no-underscore-dangle: 0 */
+
 import React from 'react';
 import PollListItem from './components/PollListItem';
 

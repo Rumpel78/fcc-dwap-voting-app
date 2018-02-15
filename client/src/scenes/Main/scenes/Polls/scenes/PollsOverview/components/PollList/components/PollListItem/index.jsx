@@ -1,4 +1,5 @@
-// src/components/NotFound/index.js
+/* eslint no-underscore-dangle: 0 */
+
 import React from 'react';
 import { Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
