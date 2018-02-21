@@ -30,7 +30,17 @@ class OnlyForAuth extends React.Component {
   createPoll(event) {
     event.preventDefault();
 
-    fetch('/api/poll', { method: 'POST', body: JSON.stringify({ Name: 'Blob' }), headers: { Authorization: `bearer ${Auth.getToken()}` } })
+    fetch('/api/polls', {
+      method: 'POST',
+      body: JSON.stringify({
+        name: 'TestPoll2',
+        createdBy: 'Thomas',
+        options: [
+          { name: 'option1', count: 12 },
+        ],
+      }),
+      headers: { Authorization: `bearer ${Auth.getToken()}`, 'Content-Type': 'application/json' },
+    })
       .then((response) => {
         if (response.status === 200) {
           return response.json();
