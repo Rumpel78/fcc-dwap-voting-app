@@ -4,6 +4,7 @@ import { Link, Route, Switch } from 'react-router-dom';
 import React from 'react';
 // import Auth from '../../services/Auth';
 
+import TopNavBar from './components/TopNavBar';
 import Home from './scenes/Home';
 import NotFound from './scenes/NotFound';
 import About from './scenes/About';
@@ -18,7 +19,6 @@ import PollsOverview from './scenes/Polls/scenes/PollsOverview';
 // import PollListPage from './containers/PollListPage';
 // import PollPage from './containers/PollPage';
 
-import logo from './logo.svg';
 import './style.css';
 
 // const AuthFilter = Authorization([ 'manger', 'admin' ]);
@@ -42,29 +42,7 @@ class Main extends React.Component {
     return (
       <div>
         <Grid>
-          <Navbar inverse fixedTop>
-            <Navbar.Header>
-              <Navbar.Brand>
-                <Link to='/'> <img src={logo} className='App-logo' alt='logo' />React App</Link>
-              </Navbar.Brand>
-              <Navbar.Toggle />
-            </Navbar.Header>
-            <Navbar.Collapse>
-              <Nav>
-                <LinkContainer to='/about'><NavItem eventKey={1}>About</NavItem></LinkContainer>
-                <LinkContainer to='/broken'><NavItem eventKey={2}>Broken</NavItem></LinkContainer>
-                <LinkContainer to='/docs'><NavItem eventKey={2}>Docs</NavItem></LinkContainer>
-                <LinkContainer to='/polls'><NavItem eventKey={2}>Polls</NavItem></LinkContainer>
-                {/* <LinkContainer to='/polls'><NavItem eventKey={2}>Polls</NavItem></LinkContainer> */}
-                {/* {Auth.isUserAuthenticated() && <LinkContainer to='/onlyForAuth'><NavItem eventKey={2}>Secret</NavItem></LinkContainer>} */}
-              </Nav>
-              <Nav pullRight>
-                {/* {Auth.isUserAuthenticated() && <LinkContainer to='/logout'><NavItem eventKey={3}>Logout</NavItem></LinkContainer>}
-                {!Auth.isUserAuthenticated() && <LinkContainer to='/login'><NavItem eventKey={3}>Login</NavItem></LinkContainer>}
-                <LinkContainer to='/signup'><NavItem eventKey={3}>SignUp</NavItem></LinkContainer> */}
-              </Nav>
-            </Navbar.Collapse>
-          </Navbar>
+          <TopNavBar />
           <Switch>
             <Route exact path='/' render={() => <Home user={this.state.user} />} />
             <Route exact path='/about' component={About} />
