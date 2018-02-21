@@ -1,7 +1,6 @@
 import { Redirect } from 'react-router-dom';
 import React from 'react';
-import Auth from '../modules/Auth';
-
+import Auth from '../../../../services/Auth';
 
 // Authorization HOC
 const Authorization = allowedRoles => WrappedComponent => () => {

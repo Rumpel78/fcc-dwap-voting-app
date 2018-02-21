@@ -1,6 +1,6 @@
 import { Jumbotron, Button } from 'react-bootstrap';
 import React from 'react';
-import Auth from '../modules/Auth';
+import Auth from '../../../../services/Auth';
 
 class OnlyForAuth extends React.Component {
   constructor(props) {

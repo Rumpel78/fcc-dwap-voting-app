@@ -1,11 +1,11 @@
 import 'whatwg-fetch';
 import React from 'react';
 import { Alert } from 'react-bootstrap';
-import LoginForm from '../components/LoginForm';
-import TimeoutRedirectedPage from '../containers/TimeoutRedirectedPage';
-import Auth from '../modules/Auth';
+import LoginForm from './components/LoginForm';
+import TimeoutRedirectedPage from './components/TimeoutRedirect';
+import Auth from '../../../../services/Auth';
 
-class LoginPage extends React.Component {
+class Login extends React.Component {
   constructor(props) {
     super(props);
 
@@ -93,4 +93,4 @@ class LoginPage extends React.Component {
   }
 }
 
-export default LoginPage;
+export default Login;

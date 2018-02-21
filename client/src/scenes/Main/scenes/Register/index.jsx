@@ -1,8 +1,8 @@
 import 'whatwg-fetch';
 import React from 'react';
-import SignUpForm from '../components/SignUpForm';
+import SignUpForm from './components/RegistrationForm';
 
-class SignUpPage extends React.Component {
+class Register extends React.Component {
   constructor(props) {
     super(props);
 
@@ -74,4 +74,4 @@ class SignUpPage extends React.Component {
   }
 }
 
-export default SignUpPage;
+export default Register;

@@ -3,6 +3,7 @@ import { LinkContainer } from 'react-router-bootstrap';
 import { Link } from 'react-router-dom';
 import React from 'react';
 import logo from './logo.svg';
+import Auth from '../../../../services/Auth';
 
 // const AuthFilter = Authorization([ 'manger', 'admin' ]);
 
@@ -21,13 +22,12 @@ const TopNavBar = () =>
           <LinkContainer to='/broken'><NavItem eventKey={2}>Broken</NavItem></LinkContainer>
           <LinkContainer to='/docs'><NavItem eventKey={2}>Docs</NavItem></LinkContainer>
           <LinkContainer to='/polls'><NavItem eventKey={2}>Polls</NavItem></LinkContainer>
-          {/* <LinkContainer to='/polls'><NavItem eventKey={2}>Polls</NavItem></LinkContainer> */}
-          {/* {Auth.isUserAuthenticated() && <LinkContainer to='/onlyForAuth'><NavItem eventKey={2}>Secret</NavItem></LinkContainer>} */}
+          {Auth.isUserAuthenticated() && <LinkContainer to='/onlyForAuth'><NavItem eventKey={2}>Secret</NavItem></LinkContainer>}
         </Nav>
         <Nav pullRight>
-          {/* {Auth.isUserAuthenticated() && <LinkContainer to='/logout'><NavItem eventKey={3}>Logout</NavItem></LinkContainer>}
+          {Auth.isUserAuthenticated() && <LinkContainer to='/logout'><NavItem eventKey={3}>Logout</NavItem></LinkContainer>}
           {!Auth.isUserAuthenticated() && <LinkContainer to='/login'><NavItem eventKey={3}>Login</NavItem></LinkContainer>}
-          <LinkContainer to='/signup'><NavItem eventKey={3}>SignUp</NavItem></LinkContainer> */}
+          <LinkContainer to='/signup'><NavItem eventKey={3}>SignUp</NavItem></LinkContainer>
         </Nav>
       </Navbar.Collapse>
     </Navbar>);
