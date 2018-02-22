@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter } from 'react-router-dom';
+import { ConnectedRouter } from 'react-router-redux';
 import { Provider } from 'react-redux';
 
 import 'bootstrap/dist/css/bootstrap.css';
@@ -8,7 +8,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 
 import Main from './scenes/Main';
 import registerServiceWorker from './registerServiceWorker';
-import store from './store';
+import store, { history } from './store';
 
 // fetch('/api/food?q=aa')
 //   .then(response => response.json())
@@ -17,9 +17,9 @@ import store from './store';
 
 ReactDOM.render(
   <Provider store={store} >
-    <BrowserRouter>
+    <ConnectedRouter history={history}>
       <Main />
-    </BrowserRouter>
+    </ConnectedRouter>
   </Provider>
   , document.getElementById('root'),
 );
