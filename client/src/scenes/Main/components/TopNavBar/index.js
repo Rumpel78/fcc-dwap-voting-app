@@ -27,7 +27,7 @@ const TopNavBar = () =>
         <Nav pullRight>
           {Auth.isUserAuthenticated() && <LinkContainer to='/logout'><NavItem eventKey={3}>Logout</NavItem></LinkContainer>}
           {!Auth.isUserAuthenticated() && <LinkContainer to='/login'><NavItem eventKey={3}>Login</NavItem></LinkContainer>}
-          <LinkContainer to='/signup'><NavItem eventKey={3}>SignUp</NavItem></LinkContainer>
+          {!Auth.isUserAuthenticated() && <LinkContainer to='/signup'><NavItem eventKey={3}>SignUp</NavItem></LinkContainer>}
         </Nav>
       </Navbar.Collapse>
     </Navbar>);
