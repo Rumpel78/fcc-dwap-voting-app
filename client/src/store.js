@@ -5,6 +5,7 @@ import { routerMiddleware } from 'react-router-redux';
 import thunk from 'redux-thunk';
 import createHistory from 'history/createBrowserHistory';
 import rootReducer from './reducers/root';
+import { createLogger } from 'redux-logger';
 
 export const history = createHistory()
 
@@ -15,14 +16,22 @@ const middleware = [
   routerMiddleware(history),
 ];
 
-// TODO: fix
-// if (process.env.NODE_ENV === 'development') {
-//   const { devToolsExtension } = window.devToolsExtension;
+// Configure the logger middleware
+const logger = createLogger({
+  level: 'info',
+  collapsed: true,
+});
 
-//   if (typeof devToolsExtension === 'function') {
-//     enhancers.push(devToolsExtension());
-//   }
-// }
+if (process.env.NODE_ENV === 'development') {
+  if (window.devToolsExtension) {
+    const { devToolsExtension } = window.devToolsExtension;
+
+    if (typeof devToolsExtension === 'function') {
+      enhancers.push(devToolsExtension());
+    }
+  }
+  middleware.push(logger);
+}
 
 const composedEnhancers = compose(
   applyMiddleware(...middleware),

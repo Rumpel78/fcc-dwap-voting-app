@@ -23,4 +23,19 @@ ReactDOM.render(
   </Provider>
   , document.getElementById('root'),
 );
+
+if (module.hot) {
+  module.hot.accept('./scenes/Main', () => {
+    const NextApp = require('./scenes/Main').default;
+    ReactDOM.render(
+      <Provider store={store}>
+        <ConnectedRouter history={history}>
+          <NextApp />
+        </ConnectedRouter>
+      </Provider>,
+      document.getElementById('root')
+    );
+  });
+}
+
 registerServiceWorker();
