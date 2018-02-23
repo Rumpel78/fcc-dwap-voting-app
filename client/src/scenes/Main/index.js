@@ -15,33 +15,18 @@ import OnlyForAuth from './scenes/OnlyForAuthTestPage';
 import Login from './scenes/Login';
 import Register from './scenes/Register';
 import Polls from './scenes/Polls';
-
 import './style.css';
 
 const AuthFilter = Authorization([ 'manger', 'admin' ]);
 
 class Main extends React.Component {
-  constructor(props) {
-    super(props);
-
-    // set the initial component state
-    this.state = {
-      user: {},
-    };
-    this.userLoggedIn = this.userLoggedIn.bind(this);
-  }
-
-  userLoggedIn(user) {
-    this.setState({ user });
-  }
-
   render() {
     return (
       <div>
         <Grid>
           <TopNavBar />
           <Switch>
-            <Route exact path='/' render={() => <Home user={this.state.user} />} />
+            <Route exact path='/' component={Home} />
             <Route exact path='/about' component={About} />
             <Route exact path='/docs' component={Docs} />
             <Route exact path='/polls' component={PollsOverview} />
