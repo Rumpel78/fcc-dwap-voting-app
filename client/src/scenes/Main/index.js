@@ -15,6 +15,7 @@ import OnlyForAuth from './scenes/OnlyForAuthTestPage';
 import Login from './scenes/Login';
 import Register from './scenes/Register';
 import Polls from './scenes/Polls';
+import User from '../../services/User';
 
 import './style.css';
 
@@ -26,13 +27,20 @@ class Main extends React.Component {
 
     // set the initial component state
     this.state = {
-      user: {},
+      user: User.isUserAvailable ? User.getUser() : {},
     };
     this.userLoggedIn = this.userLoggedIn.bind(this);
+    this.userLoggedOut = this.userLoggedOut.bind(this);
   }
 
   userLoggedIn(user) {
     this.setState({ user });
+    User.saveUser(user);
+  }
+
+  userLoggedOut() {
+    this.setState({ user: {} });
+    User.removeUser();
   }
 
   render() {
@@ -47,7 +55,7 @@ class Main extends React.Component {
             <Route exact path='/polls' component={PollsOverview} />
             <Route exact path='/login' render={() => <Login onSuccess={this.userLoggedIn} />} />
             <Route exact path='/onlyForAuth' component={AuthFilter(OnlyForAuth)} />
-            <Route exact path='/logout' component={LogOut} />
+            <Route exact path='/logout' render={() => <LogOut onSuccess={this.userLoggedOut} />} />
             <Route exact path='/signup' component={Register} />
             <Route path='/polls' components={Polls} />
             <Route component={NotFound} />

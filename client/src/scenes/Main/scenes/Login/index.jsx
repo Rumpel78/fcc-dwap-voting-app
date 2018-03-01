@@ -46,7 +46,7 @@ class Login extends React.Component {
       return response.json();
     }).then((json) => {
       if (json.success) {
-        Auth.authenticateUser(json.token);
+        Auth.authenticateUser(json.token, json.user);
         this.setState({
           success: true,
           username: json.user.name,
@@ -62,7 +62,6 @@ class Login extends React.Component {
       }
     });
   }
-
 
   changeUser(event) {
     const field = event.target.name;
