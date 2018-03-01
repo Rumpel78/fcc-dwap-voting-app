@@ -5,7 +5,7 @@ import { Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
 const PollListItem = props => (
-  <p>{props.poll.name} {props.poll.createdBy}  <Link to={`/poll/${props.poll._id}`}><Button>Show</Button></Link> </p>
+  <p>{props.poll.name} {props.poll.createdBy}  <Link to={`/polls/${props.poll._id}`}><Button>Show</Button></Link> </p>
 );
 
 export default PollListItem;
