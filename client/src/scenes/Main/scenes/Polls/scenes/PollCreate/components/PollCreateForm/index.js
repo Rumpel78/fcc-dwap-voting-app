@@ -34,7 +34,7 @@ class PollCreateForm extends React.Component {
             </Col>
           </FormGroup>
 
-          {options.map(option => <OptionListItem option={option} onChange={onChangeOption} onRemove={onRemoveOption} errors={errors} />)}
+          {options.map(option => <OptionListItem key={option.Key} option={option} onChange={onChangeOption} onRemove={onRemoveOption} errors={errors} />)}
 
           <FormGroup controlId='formHorizontalName' validationState={errors.name && 'error'} >
             <Col componentClass={ControlLabel} sm={2} smOffset={3}>

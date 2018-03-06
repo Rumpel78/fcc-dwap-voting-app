@@ -23,7 +23,7 @@ class OptionListItem extends React.Component {
     } = this.props;
 
     return (
-      <FormGroup key={option.Key} controlId='formHorizontalName' validationState={errors.options[option.Key] && 'error'} >
+      <FormGroup controlId='formHorizontalName' validationState={errors.options[option.Key] && 'error'} >
         <Col componentClass={ControlLabel} sm={3}>
           Option {option.Key + 1}
         </Col>

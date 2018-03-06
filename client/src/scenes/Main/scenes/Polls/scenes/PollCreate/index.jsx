@@ -1,7 +1,8 @@
 import 'whatwg-fetch';
 import React from 'react';
+import { withRouter } from 'react-router-dom';
 import PollCreateForm from './components/PollCreateForm';
-
+import PollApi from '../../services/PollApi';
 
 class PollCreate extends React.Component {
   constructor(props) {
@@ -26,7 +27,9 @@ class PollCreate extends React.Component {
       Name: this.state.pollName,
       Options: this.state.options,
     };
-    this.validatePoll(poll);
+    if (this.validatePoll(poll)) {
+      PollApi.CreatePoll(poll).then(_ => this.props.history.push('/polls'));
+    }
   }
 
   validatePoll(poll) {
@@ -36,6 +39,8 @@ class PollCreate extends React.Component {
       if (poll.Options[i].Name.length === 0) errors.options[i] = 'Option cannot be empty';
     }
     this.setState({ errors });
+
+    return (!errors.name && errors.options.length === 0);
   }
 
   addOption() {
@@ -92,4 +97,4 @@ class PollCreate extends React.Component {
   }
 }
 
-export default PollCreate;
+export default withRouter(PollCreate);

@@ -1,6 +1,6 @@
 import React from 'react';
 import PollPieChart from './components/PollPieChart';
-import PollApi from './services/PollApi';
+import PollApi from '../../services/PollApi';
 
 const PollShow = props => (
   <div>
