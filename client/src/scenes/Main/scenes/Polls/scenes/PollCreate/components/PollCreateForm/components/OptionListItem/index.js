@@ -1,4 +1,4 @@
-import { Button, ControlLabel, FormGroup, FormControl, Col } from 'react-bootstrap';
+import { Button, ControlLabel, FormGroup, FormControl, Col, HelpBlock } from 'react-bootstrap';
 import React from 'react';
 
 class OptionListItem extends React.Component {
@@ -23,13 +23,14 @@ class OptionListItem extends React.Component {
     } = this.props;
 
     return (
-      <FormGroup key={option.Key} controlId='formHorizontalName' validationState={errors.name && 'error'} >
+      <FormGroup key={option.Key} controlId='formHorizontalName' validationState={errors.options[option.Key] && 'error'} >
         <Col componentClass={ControlLabel} sm={3}>
-          Option {option.Key}
+          Option {option.Key + 1}
         </Col>
         <Col sm={7}>
           <FormControl name='option' type='text' placeholder='Enter option' onChange={this.change} value={option.Name} />
           <FormControl.Feedback />
+          {errors.options[option.Key] && <HelpBlock>{errors.options[option.Key]}</HelpBlock>}
         </Col>
         <Col sm={2}>
           <Button bsSize='xsmall' bsStyle='danger' onClick={this.click}>Remove</Button>

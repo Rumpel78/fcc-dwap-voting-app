@@ -9,18 +9,33 @@ class PollCreate extends React.Component {
 
     // set the initial component state
     this.state = {
-      errors: { },
-      poll: {},
-      options: [ { Key: 1, Name: '' }, { Key: 2, Name: '' } ],
+      errors: { options: [] },
+      pollName: '',
+      options: [ { Key: 0, Name: '' }, { Key: 1, Name: '' } ],
     };
 
-    this.processForm = this.processForm.bind(this);
+    this.submitted = this.submitted.bind(this);
     this.changeOption = this.changeOption.bind(this);
     this.addOption = this.addOption.bind(this);
     this.removeOption = this.removeOption.bind(this);
+    this.changePollName = this.changePollName.bind(this);
   }
 
-  processForm(event) {
+  submitted() {
+    const poll = {
+      Name: this.state.pollName,
+      Options: this.state.options,
+    };
+    this.validatePoll(poll);
+  }
+
+  validatePoll(poll) {
+    const errors = { options: [] };
+    if (poll.Name.length === 0) errors.name = 'Poll name cannot be empty';
+    for (let i = 0; i < poll.Options.length; i += 1) {
+      if (poll.Options[i].Name.length === 0) errors.options[i] = 'Option cannot be empty';
+    }
+    this.setState({ errors });
   }
 
   addOption() {
@@ -37,12 +52,16 @@ class PollCreate extends React.Component {
       return;
     }
 
-    options.splice(optionKey - 1, 1);
+    options.splice(optionKey, 1);
     for (let i = 0; i < options.length; i += 1) {
-      options[i].Key = i + 1;
+      options[i].Key = i;
     }
 
     this.setState({ options });
+  }
+
+  changePollName(name) {
+    this.setState({ pollName: name });
   }
 
   changeOption(option) {
@@ -60,12 +79,13 @@ class PollCreate extends React.Component {
   render() {
     return (
       <PollCreateForm
-        onSubmit={this.processForm}
-        onChange={this.changeOption}
+        onSubmit={this.submitted}
+        onChangePollName={this.changePollName}
+        onChangeOption={this.changeOption}
         onAddOption={this.addOption}
         onRemoveOption={this.removeOption}
         errors={this.state.errors}
-        poll={this.state.poll}
+        pollName={this.state.pollName}
         options={this.state.options}
       />
     );
