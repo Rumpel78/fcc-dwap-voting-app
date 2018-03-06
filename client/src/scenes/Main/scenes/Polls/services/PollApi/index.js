@@ -12,14 +12,25 @@ class PollApi {
     })
       .then((response) => {
         if (response.status === 200) {
-          return response.json().polls;
+          return response.json();
         }
-        return [];
-      });
+        return { polls: [] };
+      })
+      .then(json => json.polls);
   }
 
   static CreatePoll(poll) {
-    return new Promise((resolve) => { resolve(true); });
+    return fetch('/api/polls', {
+      method: 'POST',
+      body: JSON.stringify(poll),
+      headers: { 'Authorization': `bearer ${Auth.getToken()}`, 'Content-Type': 'application/json' },
+    })
+      .then((response) => {
+        if (response.status === 200) {
+          return true;
+        }
+        return false;
+      });
   }
 }
 

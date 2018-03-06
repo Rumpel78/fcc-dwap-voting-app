@@ -24,9 +24,12 @@ class PollCreate extends React.Component {
 
   submitted() {
     const poll = {
-      Name: this.state.pollName,
-      Options: this.state.options,
+      name: this.state.pollName,
+      options: [],
+      createdBy: 'TestUser',
     };
+    this.state.options.forEach(item => poll.options.push({ name: item.Name }));
+
     if (this.validatePoll(poll)) {
       PollApi.CreatePoll(poll).then(_ => this.props.history.push('/polls'));
     }
@@ -34,9 +37,9 @@ class PollCreate extends React.Component {
 
   validatePoll(poll) {
     const errors = { options: [] };
-    if (poll.Name.length === 0) errors.name = 'Poll name cannot be empty';
-    for (let i = 0; i < poll.Options.length; i += 1) {
-      if (poll.Options[i].Name.length === 0) errors.options[i] = 'Option cannot be empty';
+    if (poll.name.length === 0) errors.name = 'Poll name cannot be empty';
+    for (let i = 0; i < poll.options.length; i += 1) {
+      if (poll.options[i].name.length === 0) errors.options[i] = 'Option cannot be empty';
     }
     this.setState({ errors });
 
