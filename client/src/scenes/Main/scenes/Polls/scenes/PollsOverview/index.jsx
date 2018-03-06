@@ -1,5 +1,7 @@
 import 'whatwg-fetch';
 import React from 'react';
+import { Link } from 'react-router-dom';
+import { Button } from 'react-bootstrap';
 import PollList from './components/PollList';
 import Auth from '../../../../../../services/Auth';
 
@@ -30,7 +32,10 @@ class PollListPage extends React.Component {
 
   render() {
     return (
-      <PollList polls={this.state.polls} />
+      <div>
+        <Link to='/polls/create'><Button>Create new poll</Button></Link>
+        <PollList polls={this.state.polls} />
+      </div>
     );
   }
 }
