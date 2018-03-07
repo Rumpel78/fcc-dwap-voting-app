@@ -19,7 +19,8 @@ class PollsOverview extends React.Component {
 
   refreshPolls() {
     this.setState({ polls: [] });
-    PollApi.GetPolls().then(polls => this.setState({ polls }));
+    PollApi.GetPolls().then(polls => 
+      this.setState({ polls }));
   }
 
   render() {
