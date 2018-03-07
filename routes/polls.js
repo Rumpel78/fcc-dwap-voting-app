@@ -72,7 +72,6 @@ router.put('/polls/:pollid/:option', (req, res) => {
 });
 
 router.post('/polls', (req, res) => {
-  const test = req.user;
   const validationResult = ValidatePoll(req.body);
   if (!validationResult.success) {
     return res.status(400).json(validationResult);

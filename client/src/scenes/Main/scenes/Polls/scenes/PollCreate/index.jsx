@@ -12,7 +12,7 @@ class PollCreate extends React.Component {
     this.state = {
       errors: { options: [] },
       pollName: '',
-      options: [ { Key: 0, Name: '' }, { Key: 1, Name: '' } ],
+      options: [ { key: 0, name: '' }, { key: 1, name: '' } ],
     };
 
     this.submitted = this.submitted.bind(this);
@@ -26,9 +26,9 @@ class PollCreate extends React.Component {
     const poll = {
       name: this.state.pollName,
       options: [],
-      createdBy: 'TestUser',
+      createdBy: this.props.user.name,
     };
-    this.state.options.forEach(item => poll.options.push({ name: item.Name }));
+    this.state.options.forEach(item => poll.options.push({ name: item.name }));
 
     if (this.validatePoll(poll)) {
       PollApi.CreatePoll(poll).then(_ => this.props.history.push('/polls'));
@@ -48,8 +48,8 @@ class PollCreate extends React.Component {
 
   addOption() {
     const { options } = this.state;
-    const key = options[options.length - 1].Key + 1;
-    options.push({ Key: key, Name: '' });
+    const key = options[options.length - 1].key + 1;
+    options.push({ key, name: '' });
     this.setState({ options });
   }
 
@@ -62,7 +62,7 @@ class PollCreate extends React.Component {
 
     options.splice(optionKey, 1);
     for (let i = 0; i < options.length; i += 1) {
-      options[i].Key = i;
+      options[i].key = i;
     }
 
     this.setState({ options });
@@ -74,9 +74,9 @@ class PollCreate extends React.Component {
 
   changeOption(option) {
     const { options } = this.state;
-    const changeOption = options.find(o => o.Key === option.Key);
+    const changeOption = options.find(o => o.key === option.key);
     if (changeOption) {
-      changeOption.Name = option.Name;
+      changeOption.name = option.name;
     }
     this.setState({ options });
   }

@@ -26,7 +26,7 @@ class Main extends React.Component {
 
     // set the initial component state
     this.state = {
-      user: User.isUserAvailable ? User.getUser() : {},
+      user: User.isUserAvailable ? User.getUser() : { name: 'Guest' },
     };
     this.userLoggedIn = this.userLoggedIn.bind(this);
     this.userLoggedOut = this.userLoggedOut.bind(this);
@@ -38,7 +38,7 @@ class Main extends React.Component {
   }
 
   userLoggedOut() {
-    this.setState({ user: {} });
+    this.setState({ user: { name: 'Guest' } });
     User.removeUser();
   }
 
@@ -51,7 +51,7 @@ class Main extends React.Component {
             <Route exact path='/' render={() => <Home user={this.state.user} />} />
             <Route exact path='/about' component={About} />
             <Route exact path='/docs' component={Docs} />
-            <Route path='/polls' component={Polls} />
+            <Route path='/polls' render={() => <Polls user={this.state.user} />} />
             <Route exact path='/login' render={() => <Login onSuccess={this.userLoggedIn} />} />
             <Route exact path='/onlyForAuth' component={AuthFilter(OnlyForAuth)} />
             <Route exact path='/logout' render={() => <LogOut onSuccess={this.userLoggedOut} />} />

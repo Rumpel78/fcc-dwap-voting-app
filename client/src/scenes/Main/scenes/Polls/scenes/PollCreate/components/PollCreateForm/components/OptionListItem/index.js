@@ -10,11 +10,11 @@ class OptionListItem extends React.Component {
   }
 
   click() {
-    this.props.onRemove(this.props.option.Key);
+    this.props.onRemove(this.props.option.key);
   }
 
   change(event) {
-    this.props.onChange({ Key: this.props.option.Key, Name: event.target.value });
+    this.props.onChange({ key: this.props.option.key, name: event.target.value });
   }
 
   render() {
@@ -23,14 +23,14 @@ class OptionListItem extends React.Component {
     } = this.props;
 
     return (
-      <FormGroup controlId='formHorizontalName' validationState={errors.options[option.Key] && 'error'} >
+      <FormGroup controlId='formHorizontalName' validationState={errors.options[option.key] && 'error'} >
         <Col componentClass={ControlLabel} sm={3}>
-          Option {option.Key + 1}
+          Option {option.key + 1}
         </Col>
         <Col sm={7}>
-          <FormControl name='option' type='text' placeholder='Enter option' onChange={this.change} value={option.Name} />
+          <FormControl name='option' type='text' placeholder='Enter option' onChange={this.change} value={option.name} />
           <FormControl.Feedback />
-          {errors.options[option.Key] && <HelpBlock>{errors.options[option.Key]}</HelpBlock>}
+          {errors.options[option.key] && <HelpBlock>{errors.options[option.key]}</HelpBlock>}
         </Col>
         <Col sm={2}>
           <Button bsSize='xsmall' bsStyle='danger' onClick={this.click}>Remove</Button>
