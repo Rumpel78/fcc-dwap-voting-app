@@ -94,9 +94,8 @@ router.post('/polls', (req, res) => {
   const poll = new Poll();
   poll.name = req.body.name;
   poll.createdBy = 'Guest';
-  poll.option = [];
   for (let i = 0; i < req.body.options.length; i += 1) {
-    poll.option.push({ name: req.body.options[i].name, count: 0 });
+    poll.options.push({ name: req.body.options[i].name, count: 0 });
   }
   if (req.user) {
     poll.createdBy = req.user.name;
