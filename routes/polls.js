@@ -13,14 +13,28 @@ function ValidatePoll(poll) {
     errors.name = 'Please provide a correct name.';
   }
 
-  if (!poll || !poll.createdBy || typeof poll.createdBy !== 'string' || poll.name.trim().createdBy === 0) {
+  if (!poll || !poll.options || !Array.isArray(poll.options) || poll.options.length === 0) {
     isValid = false;
-    errors.name = 'Please provide by whom this poll was created.';
+    errors.name = 'Please provide poll options.';
   }
 
   if (!poll || !poll.options || !Array.isArray(poll.options) || poll.options.length === 0) {
     isValid = false;
-    errors.name = 'Please provide poll options.';
+    errors.options = 'Please provide poll options.';
+  } else {
+    for (let i = 0; i < poll.options.length; i += 1) {
+      if (!poll.options[i].name) {
+        isValid = false;
+        errors.options.splice(i, 0, 'Option may not be empty');
+      } else {
+        for (let j = i + 1; j < poll.options.length; j += 1) {
+          if (poll.options[i].name === poll.options[j].name) {
+            isValid = false;
+            errors.options.splice(i, 0, 'Option defined multiple times');
+          }
+        }
+      }
+    }
   }
 
   if (!isValid) {
@@ -57,12 +71,13 @@ router.put('/polls/:pollid/:option', (req, res) => {
     if (err) {
       return res.send(err);
     }
-    poll.options.forEach((option) => {
-      if (option.name === req.params.option) {
-        option.count += 1;
-      }
-    });
-    poll.save((err) => {
+
+    const option = poll.options.find(o => o.name === req.params.option);
+    if (option) {
+      option.coount += 1;
+    }
+
+    return poll.save((err) => {
       if (err) {
         return res.send(err);
       }
@@ -78,13 +93,16 @@ router.post('/polls', (req, res) => {
   }
   const poll = new Poll();
   poll.name = req.body.name;
-  poll.createdBy = req.body.createdBy;
-  poll.options = req.body.options;
-  poll.options.forEach((element) => {
-    element.count = 0;
-  });
+  poll.createdBy = 'Guest';
+  poll.option = [];
+  for (let i = 0; i < req.body.options.length; i += 1) {
+    poll.option.push({ name: req.body.options[i].name, count: 0 });
+  }
+  if (req.user) {
+    poll.createdBy = req.user.name;
+  }
 
-  poll.save((err) => {
+  return poll.save((err) => {
     // saved!
     if (err) {
       return res.send(err);

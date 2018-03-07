@@ -26,24 +26,15 @@ class PollCreate extends React.Component {
     const poll = {
       name: this.state.pollName,
       options: [],
-      createdBy: this.props.user.name,
     };
     this.state.options.forEach(item => poll.options.push({ name: item.name }));
 
-    if (this.validatePoll(poll)) {
-      PollApi.CreatePoll(poll).then(_ => this.props.history.push('/polls'));
+    const validationResult = PollApi.Validate(poll);
+    if (validationResult.success) {
+      PollApi.CreatePoll(poll).then(this.props.history.push('/polls'));
+      return;
     }
-  }
-
-  validatePoll(poll) {
-    const errors = { options: [] };
-    if (poll.name.length === 0) errors.name = 'Poll name cannot be empty';
-    for (let i = 0; i < poll.options.length; i += 1) {
-      if (poll.options[i].name.length === 0) errors.options[i] = 'Option cannot be empty';
-    }
-    this.setState({ errors });
-
-    return (!errors.name && errors.options.length === 0);
+    this.setState({ errors: validationResult.errors });
   }
 
   addOption() {

@@ -18,19 +18,17 @@ class OptionListItem extends React.Component {
   }
 
   render() {
-    const {
-      option, errors,
-    } = this.props;
+    const { option, error } = this.props;
 
     return (
-      <FormGroup controlId='formHorizontalName' validationState={errors.options[option.key] && 'error'} >
+      <FormGroup controlId='formHorizontalName' validationState={error && 'error'} >
         <Col componentClass={ControlLabel} sm={3}>
           Option {option.key + 1}
         </Col>
         <Col sm={7}>
           <FormControl name='option' type='text' placeholder='Enter option' onChange={this.change} value={option.name} />
           <FormControl.Feedback />
-          {errors.options[option.key] && <HelpBlock>{errors.options[option.key]}</HelpBlock>}
+          {error && <HelpBlock>{error.message}</HelpBlock>}
         </Col>
         <Col sm={2}>
           <Button bsSize='xsmall' bsStyle='danger' onClick={this.click}>Remove</Button>

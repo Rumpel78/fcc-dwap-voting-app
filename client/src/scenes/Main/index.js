@@ -51,7 +51,7 @@ class Main extends React.Component {
             <Route exact path='/' render={() => <Home user={this.state.user} />} />
             <Route exact path='/about' component={About} />
             <Route exact path='/docs' component={Docs} />
-            <Route path='/polls' render={() => <Polls user={this.state.user} />} />
+            <Route path='/polls' component={Polls} />
             <Route exact path='/login' render={() => <Login onSuccess={this.userLoggedIn} />} />
             <Route exact path='/onlyForAuth' component={AuthFilter(OnlyForAuth)} />
             <Route exact path='/logout' render={() => <LogOut onSuccess={this.userLoggedOut} />} />
