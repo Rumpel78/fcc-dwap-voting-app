@@ -58,7 +58,7 @@ router.get('/polls', (req, res) => {
 });
 
 router.get('/polls/:pollid', (req, res) => {
-  Poll.findById(req.params.pollId, (err, poll) => {
+  Poll.findById(req.params.pollid, (err, poll) => {
     res.status(200).json({
       message: `Poll with id ${req.params.pollId}`,
       poll,

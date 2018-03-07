@@ -2,7 +2,17 @@ import Auth from '../../../../../../services/Auth';
 
 class PollApi {
   static GetPoll(id) {
-    return id;
+    return fetch(`/api/polls/${id}`, {
+      method: 'GET',
+      headers: { Authorization: `bearer ${Auth.getToken()}` },
+    })
+      .then((response) => {
+        if (response.status === 200) {
+          return response.json();
+        }
+        return { };
+      })
+      .then(json => json.poll);
   }
 
   static Validate(poll) {
