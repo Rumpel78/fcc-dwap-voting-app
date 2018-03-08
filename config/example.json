@@ -1,6 +1,7 @@
 {
   "dbUri": "mongodb://localhost/react_app",
   "jwtSecret": "SuperSecretKey!",
-  "twitterConsumerKey": "",
-  "twitterConsumerSecret": ""
+  "twitterConsumerKey": "your consumer key",
+  "twitterConsumerSecret": "your consumer secret",
+  "twitterCallback":	"http://localhost/auth/twitter/callback"
 }
