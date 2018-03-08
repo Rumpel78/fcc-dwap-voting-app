@@ -6,6 +6,8 @@ class TimeoutRedirectedPage extends React.Component {
   constructor(props) {
     super(props);
 
+    this.mounted = false;
+
     // set the initial component state
     this.state = {
       redirect: false,
@@ -13,12 +15,18 @@ class TimeoutRedirectedPage extends React.Component {
       component: props.component,
       to: props.to,
     };
+    this.timeout = setTimeout(() => {
+      if (this.mounted) this.setState({ redirect: true });
+    }, this.state.timeout);
   }
 
   componentDidMount() {
-    setTimeout(() => {
-      this.setState({ redirect: true });
-    }, this.state.timeout);
+    this.mounted = true;
+  }
+
+  componentWillUnmount() {
+    this.mounted = false;
+    clearTimeout(this.timeout);
   }
 
   render() {
