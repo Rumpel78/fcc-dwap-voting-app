@@ -1,9 +1,12 @@
+/* eslint no-underscore-dangle: 0 */
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Row, Col, Table } from 'react-bootstrap';
 import PollPieChart from './components/PollPieChart';
 import PollApi from '../../services/PollApi';
 import PollOptionRow from './components/PollOptionRow';
+import VotedModal from './components/VotedModal';
 
 class PollShow extends React.Component {
   constructor(props) {
@@ -12,9 +15,12 @@ class PollShow extends React.Component {
     this.state = {
       poll: {},
       disabled: false,
+      showModal: false,
+      votedOption: '',
     };
 
     this.vote = this.vote.bind(this);
+    this.modalClose = this.modalClose.bind(this);
   }
 
   componentDidMount() {
@@ -33,8 +39,12 @@ class PollShow extends React.Component {
     PollApi.Vote(this.state.poll._id, optionName)
       .then(() => {
         this.refreshPoll();
-        this.setState({ disabled: false });
+        this.setState({ disabled: false, showModal: true, votedOption: optionName });
       });
+  }
+
+  modalClose() {
+    this.setState({ showModal: false });
   }
 
   render() {
@@ -64,6 +74,7 @@ class PollShow extends React.Component {
             <PollPieChart poll={poll} />
           </Col>
         </Row>
+        <VotedModal show={this.state.showModal} onClose={this.modalClose} name={this.state.votedOption} />
       </div>
     );
   }
