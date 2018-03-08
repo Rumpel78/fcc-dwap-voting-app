@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const passport = require('passport');
 const config = require('./config');
 const morgan = require('morgan');
+const { Strategy } = require('passport-twitter');
 
 // connect to the database and load models
 require('./models').open(config.dbUri);
@@ -21,16 +22,33 @@ if (process.env.NODE_ENV === 'production') {
 // tell the app to parse HTTP body messages
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-// pass the passport middleware
+
+// passport
+// passport local strategies
+passport.use('local-signup', require('./passport/local-signup'));
+passport.use('local-login', require('./passport/local-login'));
+passport.use(new Strategy({
+  consumerKey: config.twitterConsumerKey,
+  consumerSecret: config.twitterConsumerSecret,
+  callbackURL: config.twitterCallback,
+}, (token, tokenSecret, profile, done) => done(null, profile)));
+
+passport.serializeUser(function(user, cb) {
+  cb(null, user);
+});
+
+passport.deserializeUser(function(obj, cb) {
+  cb(null, obj);
+});
+app.use(require('express-session')({ secret: 'keyboard cat', resave: true, saveUninitialized: true }));
 app.use(passport.initialize());
+app.use(passport.session());
 
-// load passport strategies
-const localSignupStrategy = require('./passport/local-signup');
-const localLoginStrategy = require('./passport/local-login');
+// passport twitter strategies
+app.get('/auth/twitter', passport.authenticate('twitter'));
+app.get('/auth/twitter/callback', passport.authenticate('twitter', { successRedirect: '/', failureRedirect: '/login' }));
 
-passport.use('local-signup', localSignupStrategy);
-passport.use('local-login', localLoginStrategy);
-
+// Inject local use middleware
 app.use(require('./middleware/jwt-user'));
 
 // Set up routes
