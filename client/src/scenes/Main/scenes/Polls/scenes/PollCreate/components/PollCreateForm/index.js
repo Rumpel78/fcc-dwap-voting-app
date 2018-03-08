@@ -18,14 +18,14 @@ class PollCreateForm extends React.Component {
       onSubmit, onChangeOption, onAddOption, errors, pollName, options, onRemoveOption,
     } = this.props;
     return (
-      <Col xs={12} md={6}>
+      <Col xs={12} md={8} lg={6} mdOffset={2} lgOffset={3}>
 
         <Form horizontal action='/' onSubmit={onSubmit}>
           <h2 className='centered'>Create new Poll</h2>
-
+          <br />
           <FormGroup controlId='formHorizontalName' validationState={errors.name && 'error'} >
             <Col componentClass={ControlLabel} sm={3}>
-              Name of Poll:
+              Name:
             </Col>
             <Col sm={9}>
               <FormControl name='name' type='text' placeholder='Enter a name for the poll' onChange={this.nameChange} value={pollName} />
@@ -43,14 +43,14 @@ class PollCreateForm extends React.Component {
           })}
 
           <FormGroup controlId='formHorizontalName' validationState={errors.name && 'error'} >
-            <Col componentClass={ControlLabel} sm={2} smOffset={3}>
-              <Button bsStyle='success' onClick={onAddOption}>Add Option</Button>
+            <Col componentClass={ControlLabel} sm={3} smOffset={9}>
+              <Button bsStyle='success' onClick={onAddOption} bsSize='xsmall' block>Add Option</Button>
             </Col>
           </FormGroup>
 
           <FormGroup controlId='formHorizontalName' validationState={errors.name && 'error'} >
-            <Col componentClass={ControlLabel} sm={2} smOffset={3}>
-              <Button bsStyle='primary' onClick={onSubmit}>Create Poll</Button>
+            <Col componentClass={ControlLabel} sm={12} >
+              <Button bsStyle='primary' onClick={onSubmit} block>Create Poll</Button>
             </Col>
           </FormGroup>
         </Form>

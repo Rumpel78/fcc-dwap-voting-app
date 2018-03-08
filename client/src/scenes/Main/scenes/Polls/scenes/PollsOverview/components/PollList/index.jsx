@@ -5,13 +5,13 @@ import { Table } from 'react-bootstrap';
 import PollListItem from './components/PollListItem';
 
 const PollList = props => (
-  <Table striped bordered condensed hover>
+  <Table>
     <thead>
       <tr>
         <th>Poll Name</th>
         <th>Created By</th>
         <th>Options</th>
-        <th>Action</th>
+        <th />
       </tr>
     </thead>
     <tbody>

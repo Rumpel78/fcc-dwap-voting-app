@@ -1,7 +1,7 @@
 import 'whatwg-fetch';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Button } from 'react-bootstrap';
+import { Button, ButtonToolbar } from 'react-bootstrap';
 import PollList from './components/PollList';
 import PollApi from '../../services/PollApi';
 
@@ -26,8 +26,12 @@ class PollsOverview extends React.Component {
   render() {
     return (
       <div>
-        <Link to='/polls/create'><Button>Create new poll</Button></Link>
-        <Button onClick={this.refreshPolls} >Refresh</Button>
+        <ButtonToolbar>
+          <Link to='/polls/create'><Button bsStyle='success'>Create new poll</Button></Link>
+          <Button onClick={this.refreshPolls} bsStyle='primary'>Refresh</Button>
+        </ButtonToolbar>
+        <br />
+        <br />
         <PollList polls={this.state.polls} />
       </div>
     );

@@ -74,7 +74,7 @@ router.put('/polls/:pollid/:option', (req, res) => {
 
     const option = poll.options.find(o => o.name === req.params.option);
     if (option) {
-      option.coount += 1;
+      option.count += 1;
     }
 
     return poll.save((err) => {

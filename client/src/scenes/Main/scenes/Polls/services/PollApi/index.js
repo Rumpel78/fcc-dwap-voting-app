@@ -83,6 +83,19 @@ class PollApi {
         return false;
       });
   }
+
+  static Vote(pollId, optionName) {
+    return fetch(`/api/polls/${pollId}/${optionName}`, {
+      method: 'PUT',
+      headers: { 'Authorization': `bearer ${Auth.getToken()}`, 'Content-Type': 'application/json' },
+    })
+      .then((response) => {
+        if (response.status === 200) {
+          return true;
+        }
+        return false;
+      });
+  }
 }
 
 export default PollApi;

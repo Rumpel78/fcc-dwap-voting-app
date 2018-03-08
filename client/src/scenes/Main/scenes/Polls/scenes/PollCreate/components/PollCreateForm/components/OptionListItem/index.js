@@ -25,13 +25,13 @@ class OptionListItem extends React.Component {
         <Col componentClass={ControlLabel} sm={3}>
           Option {option.key + 1}
         </Col>
-        <Col sm={7}>
+        <Col sm={6}>
           <FormControl name='option' type='text' placeholder='Enter option' onChange={this.change} value={option.name} />
           <FormControl.Feedback />
           {error && <HelpBlock>{error.message}</HelpBlock>}
         </Col>
-        <Col sm={2}>
-          <Button bsSize='xsmall' bsStyle='danger' onClick={this.click}>Remove</Button>
+        <Col sm={3}>
+          <Button bsSize='xsmall' bsStyle='danger' onClick={this.click} block>Remove</Button>
         </Col>
       </FormGroup>
     );
