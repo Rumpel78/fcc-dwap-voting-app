@@ -1,5 +1,6 @@
 import { Button, ControlLabel, FormGroup, FormControl, Col, Form, HelpBlock } from 'react-bootstrap';
 import React from 'react';
+import { Link } from 'react-router-dom';
 import OptionListItem from './components/OptionListItem';
 
 class PollCreateForm extends React.Component {
@@ -49,8 +50,11 @@ class PollCreateForm extends React.Component {
           </FormGroup>
 
           <FormGroup controlId='formHorizontalName' validationState={errors.name && 'error'} >
-            <Col componentClass={ControlLabel} sm={12} >
+            <Col componentClass={ControlLabel} sm={6} >
               <Button bsStyle='primary' onClick={onSubmit} block>Create Poll</Button>
+            </Col>
+            <Col componentClass={ControlLabel} sm={6} >
+              <Link to='/polls'><Button bsStyle='primary' block>Abort</Button></Link>
             </Col>
           </FormGroup>
         </Form>
