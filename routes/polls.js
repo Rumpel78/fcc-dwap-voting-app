@@ -113,7 +113,8 @@ router.post('/polls', (req, res) => {
 });
 
 router.delete('/polls/:pollId', (req, res) => {
-  Poll.remove({ _id: req.params.pollId }, (err) => {
+  const currentUserName = req.user ? req.user.name : 'Guest';
+  Poll.remove({ _id: req.params.pollId, createdBy: currentUserName }, (err) => {
     if (err) {
       return res.send(err);
     }

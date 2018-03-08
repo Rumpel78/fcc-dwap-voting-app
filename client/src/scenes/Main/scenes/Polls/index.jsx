@@ -4,12 +4,12 @@ import PollsOverview from './scenes/PollsOverview';
 import PollShow from './scenes/PollShow';
 import PollCreate from './scenes/PollCreate';
 
-const polls = () => (
+const polls = ({ user }) => (
   <div>
     <br />
     <Switch>
       <Route exact path='/polls/create' component={PollCreate} />
-      <Route exact path='/polls' component={PollsOverview} />
+      <Route exact path='/polls' render={() => <PollsOverview user={user} />} />
       <Route path='/polls/:id' component={PollShow} />
     </Switch>
   </div>

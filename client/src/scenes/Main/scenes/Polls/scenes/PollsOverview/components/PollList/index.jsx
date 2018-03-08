@@ -4,7 +4,7 @@ import React from 'react';
 import { Table } from 'react-bootstrap';
 import PollListItem from './components/PollListItem';
 
-const PollList = props => (
+const PollList = ({ polls, onDelete, user }) => (
   <Table>
     <thead>
       <tr>
@@ -15,7 +15,7 @@ const PollList = props => (
       </tr>
     </thead>
     <tbody>
-      { props.polls && props.polls.map(item => <PollListItem key={item._id} poll={item} />) }
+      { polls && polls.map(item => <PollListItem key={item._id} poll={item} onDelete={onDelete} user={user} />) }
     </tbody>
   </Table>
 );

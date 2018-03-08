@@ -11,6 +11,7 @@ class PollsOverview extends React.Component {
 
     this.state = { polls: [] };
     this.refreshPolls = this.refreshPolls.bind(this);
+    this.deletePoll = this.deletePoll.bind(this);
   }
 
   componentDidMount() {
@@ -23,6 +24,13 @@ class PollsOverview extends React.Component {
       this.setState({ polls }));
   }
 
+  deletePoll(id) {
+    PollApi.Delete(id)
+      .then(() => {
+        this.refreshPolls();
+      });
+  }
+
   render() {
     return (
       <div>
@@ -32,7 +40,7 @@ class PollsOverview extends React.Component {
         </ButtonToolbar>
         <br />
         <br />
-        <PollList polls={this.state.polls} />
+        <PollList polls={this.state.polls} onDelete={this.deletePoll} user={this.props.user} />
       </div>
     );
   }
