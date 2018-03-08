@@ -11,6 +11,7 @@ const PollList = ({ polls, onDelete, user }) => (
         <th>Poll Name</th>
         <th>Created By</th>
         <th>Options</th>
+        <th>Total Votes</th>
         <th />
       </tr>
     </thead>

@@ -9,6 +9,7 @@ const PollListItem = ({ poll, onDelete, user }) => (
     <td>{poll.name}</td>
     <td>{poll.createdBy}</td>
     <td>{poll.options.length}</td>
+    <td>{poll.options.reduce((pv, cv) => pv + cv.count, 0)}</td>
     <td>
       <ButtonToolbar>
         <Link to={`/polls/${poll._id}`}><Button bsStyle='primary'>Show</Button></Link>&nbsp;
