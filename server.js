@@ -22,6 +22,9 @@ if (process.env.NODE_ENV === 'production') {
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+const passportConfig = require('./passport/twitter');
+passportConfig();
+
 // passport
 // passport local strategies
 passport.use('local-signup', require('./passport/local-signup'));
@@ -30,16 +33,13 @@ passport.use('local-login', require('./passport/local-login'));
 app.use(passport.initialize());
 
 // Inject local use middleware
-app.use(require('./middleware/jwt-user'));
+//app.use(require('./middleware/jwt-user'));
 
 // Set up routes
-const authRoutes = require('./routes/auth');
-const apiRoutes = require('./routes/api');
-const pollRoutes = require('./routes/polls');
-
-app.use('/auth', authRoutes);
-app.use('/api', apiRoutes);
-app.use('/api', pollRoutes);
+app.use('/auth/twitter', require('./routes/twitter'));
+app.use('/auth', require('./routes/auth'));
+app.use('/api', require('./routes/api'));
+app.use('/api', require('./routes/polls'));
 
 app.listen(app.get('port'), () => {
   console.log(`Find the server at: http://localhost:${app.get('port')}/`); // eslint-disable-line no-console
