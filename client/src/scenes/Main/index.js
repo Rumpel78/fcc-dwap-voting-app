@@ -1,6 +1,7 @@
 import { Grid } from 'react-bootstrap';
 import { Route, Switch } from 'react-router-dom';
 import React from 'react';
+import TwitterLogin from 'react-twitter-auth';
 
 import TopNavBar from './components/TopNavBar';
 import LogOut from './components/LogOut';
@@ -26,11 +27,28 @@ class Main extends React.Component {
 
     // set the initial component state
     this.state = {
-      user: User.isUserAvailable ? User.getUser() : { name: 'Guest' },
+      user: { isAuthenticated: false, user: null, token: '' },
     };
     this.userLoggedIn = this.userLoggedIn.bind(this);
     this.userLoggedOut = this.userLoggedOut.bind(this);
   }
+
+  onSuccess = (response) => {
+    const token = response.headers.get('x-auth-token');
+    response.json().then((user) => {
+      if (token) {
+        this.setState({ isAuthenticated: true, user, token });
+      }
+    });
+  };
+
+  onFailed = (error) => {
+    alert(error);
+  };
+
+  logout = () => {
+    this.setState({ isAuthenticated: false, token: '', user: null });
+  };
 
   userLoggedIn(user) {
     this.setState({ user });
@@ -41,12 +59,20 @@ class Main extends React.Component {
     this.setState({ user: { name: 'Guest' } });
     User.removeUser();
   }
-
   render() {
     return (
       <div>
         <Grid>
           <TopNavBar />
+          <TwitterLogin
+            loginUrl='/api/auth/twitter'
+            onFailure={this.onFailed}
+            onSuccess={this.onSuccess}
+            requestTokenUrl='/auth/twitter/reverse'
+          />
+          <p>{this.state.isAuthenticated}</p>
+          <p>{this.state.user && this.state.user.name}</p>
+          <p>{this.state.token}</p>
           <Switch>
             <Route exact path='/' render={() => <Home user={this.state.user} />} />
             <Route exact path='/about' component={About} />

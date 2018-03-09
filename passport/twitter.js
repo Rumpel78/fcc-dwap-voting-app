@@ -1,6 +1,17 @@
 const passport = require('passport');
-const TwitterStrategy = require('passport-twitter').Strategy;
-const config = require('../config');
-const User = require('../models/user.js');
+const TwitterTokenStrategy = require('passport-twitter-token');
+const User = require('mongoose').model('User');
+const Config = require('../config');
 
-
+module.exports = () => {
+  passport.use(new TwitterTokenStrategy(
+    {
+      consumerKey: Config.twitterConsumerKey,
+      consumerSecret: Config.twitterConsumerSecret,
+    },
+  function (token, tokenSecret, profile, done) {
+    User.upsertTwitterUser(token, tokenSecret, profile, function(err, user) {
+      return done(err, user);
+    });
+  }));
+};

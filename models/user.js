@@ -5,10 +5,22 @@ const bcrypt = require('bcrypt');
 const UserSchema = new mongoose.Schema({
   email: {
     type: String,
+    required: true,
+    trim: true,
     index: { unique: true },
   },
+  twitterProvider: {
+    type: {
+      id: String,
+      token: String,
+    },
+    select: false,
+  },
   password: String,
-  name: String,
+  name: {
+    type: String,
+    trim: true,
+  },
 });
 
 
@@ -22,6 +34,33 @@ UserSchema.methods.comparePassword = function comparePassword(password, callback
   bcrypt.compare(password, this.password, callback);
 };
 
+UserSchema.statics.upsertTwitterUser = (token, tokenSecret, profile, cb) => {
+  let that = this;
+  return this.findOne({
+    'twitterProvider.id': profile.id,
+  }, (err, user) => {
+    // no user was found, lets create a new one
+    if (!user) {
+      let newUser = new that({
+        name: profile.displayName,
+        twitterProvider: {
+          id: profile.id,
+          token,
+          tokenSecret,
+        },
+      });
+
+      newUser.save((error, savedUser) => {
+        if (error) {
+          console.log(error);
+        }
+        return cb(error, savedUser);
+      });
+    } else {
+      return cb(err, user);
+    }
+  });
+};
 
 /**
  * The pre-save hook method.
