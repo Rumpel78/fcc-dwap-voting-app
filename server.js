@@ -19,14 +19,15 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 // tell the app to parse HTTP body messages
-app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 
-const passportConfig = require('./passport/twitter');
-passportConfig();
+// const passportConfig = require('./passport/twitter');
+// passportConfig();
 
 // passport
 // passport local strategies
+// passport.use('twitter-token', require('./passport/twitter'));
 passport.use('local-signup', require('./passport/local-signup'));
 passport.use('local-login', require('./passport/local-login'));
 
@@ -36,7 +37,7 @@ app.use(passport.initialize());
 //app.use(require('./middleware/jwt-user'));
 
 // Set up routes
-app.use('/auth/twitter', require('./routes/twitter'));
+//app.use('/api/auth/twitter', require('./routes/twitter'));
 app.use('/auth', require('./routes/auth'));
 app.use('/api', require('./routes/api'));
 app.use('/api', require('./routes/polls'));

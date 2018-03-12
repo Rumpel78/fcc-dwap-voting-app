@@ -40,10 +40,7 @@ class Login extends React.Component {
         'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
       },
     }).then((response) => {
-      if (response.status === 200) {
-        this.setState({ errors: {} });
-        return response.json();
-      }
+      return response.json();
     }).then((json) => {
       if (json.success) {
         Auth.authenticateUser(json.token, json.user);
