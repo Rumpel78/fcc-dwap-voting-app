@@ -20,7 +20,7 @@ router.post(
       {
         url: 'https://api.twitter.com/oauth/request_token',
         oauth: {
-          callback: "http://localhost:3000/twitter-callback",
+          oauth_callback: config.twitterCallback,
           consumer_key: config.twitterConsumerKey,
           consumer_secret: config.twitterConsumerSecret,
         },
@@ -35,8 +35,8 @@ router.post(
           return res.send(500, { message: 'Malformed response from Twitter' });
         }
 
-        const requestToken = body.match(tokenRegex)[1];
-        res.send({ requestToken });
+        const oauth_token = body.match(tokenRegex)[1];
+        res.send({ oauth_token });
       },
     );
   },

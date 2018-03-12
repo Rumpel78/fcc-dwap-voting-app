@@ -1,6 +1,7 @@
 import { Grid } from 'react-bootstrap';
 import { Route, Switch } from 'react-router-dom';
 import React from 'react';
+import TwitterLogin from 'react-twitter-auth';
 
 import TopNavBar from './components/TopNavBar';
 import LogOut from './components/LogOut';
@@ -63,6 +64,12 @@ class Main extends React.Component {
       <div>
         <Grid>
           <TopNavBar />
+          <TwitterLogin
+            loginUrl="http://localhost:3000/auth/twitter"
+            onFailure={this.onFailed}
+            onSuccess={this.onSuccess}
+            requestTokenUrl="http://localhost:3000/auth/twitter/reverse" />
+
           <p>Authenticated: {this.state.isAuthenticated}</p>
           <p>Username: {this.state.user && this.state.user.name}</p>
           <p>Token: {this.state.token}</p>
