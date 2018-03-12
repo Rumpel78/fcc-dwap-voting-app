@@ -5,9 +5,10 @@ const bcrypt = require('bcrypt');
 const UserSchema = new mongoose.Schema({
   email: {
     type: String,
-    required: true,
     trim: true,
-    index: { unique: true },
+    index: true,
+    unique: true,
+    sparse: true,
   },
   twitterProvider: {
     type: {
@@ -23,7 +24,33 @@ const UserSchema = new mongoose.Schema({
   },
 });
 
+UserSchema.statics.upsertTwitterUser = function (token, tokenSecret, profile, cb) {
+  const that = this;
+  return this.findOne({
+    'twitterProvider.id': profile.id,
+  }, function (err, user) {
+    // no user was found, lets create a new one
+    if (!user) {
+      const newUser = new that({
+        email: profile.emails[0].value,
+        name: profile.username,
+        twitterProvider: {
+          id: profile.id,
+          token,
+          tokenSecret,
+        },
+      });
 
+      newUser.save(function (error, savedUser) {
+        if (error) {
+          console.log(error);
+        }
+        return cb(error, savedUser);
+      });
+    }
+    return cb(err, user);
+  });
+};
 /**
  * Compare the passed password with the value in the database. A model method.
  *
@@ -33,31 +60,6 @@ const UserSchema = new mongoose.Schema({
 UserSchema.methods.comparePassword = function comparePassword(password, callback) {
   bcrypt.compare(password, this.password, callback);
 };
-
-UserSchema.statics.upsertTwitterUser = (token, tokenSecret, profile, cb) =>
-  this.findOne({
-    'twitterProvider.id': profile.id,
-  }, (err, user) => {
-    // no user was found, lets create a new one
-    if (!user) {
-      const newUser = new UserSchema({
-        name: profile.displayName,
-        twitterProvider: {
-          id: profile.id,
-          token,
-          tokenSecret,
-        },
-      });
-
-      return newUser.save((error, savedUser) => {
-        if (error) {
-          console.log(error);
-        }
-        return cb(error, savedUser);
-      });
-    }
-    return cb(err, user);
-  });
 
 /**
  * The pre-save hook method.

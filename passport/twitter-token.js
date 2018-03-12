@@ -8,9 +8,11 @@ module.exports = () => {
     {
       consumerKey: Config.twitterConsumerKey,
       consumerSecret: Config.twitterConsumerSecret,
+      includeEntities: false,
     },
     (token, tokenSecret, profile, done) => {
-      User.upsertTwitterUser(token, tokenSecret, profile, (err, user) => done(err, user));
+      User.upsertTwitterUser(token, tokenSecret, profile, (err, user) =>
+        done(err, user));
     },
   ));
 };

@@ -2,15 +2,57 @@ const express = require('express');
 const passport = require('passport');
 const request = require('request');
 const config = require('../config');
-var qs = require('querystring')
 
 const router = new express.Router();
-const tokenRegex = 'oauth_token="(.+?)"';
+const { generateToken, sendToken } = require('../passport/token');
 
 router.post(
-  '/twitter/token',
-  passport.authenticate('twitter-token'),
-  (req, res) => res.send(req.user ? 200 : 401),
+  '/twitter/verify',
+  (req, res, next) => { 
+    request.post(
+      {
+        url: 'https://api.twitter.com/oauth/access_token?oauth_verifier',
+        oauth: {
+          token: req.query.oauth_token,
+          consumer_key: config.twitterConsumerKey,
+          consumer_secret: config.twitterConsumerSecret,
+        },
+        form: {
+          oauth_verifier: req.query.oauth_verifier ,
+        },
+      },
+      (err, r, body) => {
+        if (err) {
+          return res.send(500, { message: err.message });
+        }
+
+        console.log(body);
+        const bodyString = '{ "' + body.replace(/&/g, '", "').replace(/=/g, '": "') + '"}';
+        const parsedBody = JSON.parse(bodyString);
+
+        req.body['oauth_token'] = parsedBody.oauth_token;
+        req.body['oauth_token_secret'] = parsedBody.oauth_token_secret;
+        req.body['user_id'] = parsedBody.user_id;
+
+        next();
+      },
+    );
+  },
+  passport.authenticate('twitter-token', { session: false }),
+  (req, res, next) => {
+    if (!req.user) {
+      return res.send(401, 'User Not Authenticated');
+    }
+
+    // prepare token for API
+    req.auth = {
+      id: req.user.id,
+    };
+
+    next();
+  },
+  generateToken,
+  sendToken,
 );
 
 router.post(
@@ -20,23 +62,18 @@ router.post(
       {
         url: 'https://api.twitter.com/oauth/request_token',
         oauth: {
-          oauth_callback: config.twitterCallback,
+          callback: config.twitterCallback,
           consumer_key: config.twitterConsumerKey,
           consumer_secret: config.twitterConsumerSecret,
         },
-        form: { x_auth_mode: 'reverse_auth' },
       },
       (err, r, body) => {
         if (err) {
           return res.send(500, { message: err.message });
         }
 
-        if (body.indexOf('OAuth') !== 0) {
-          return res.send(500, { message: 'Malformed response from Twitter' });
-        }
-
-        const oauth_token = body.match(tokenRegex)[1];
-        res.send({ oauth_token });
+        const jsonStr = '{ "' + body.replace(/&/g, '", "').replace(/=/g, '": "') + '"}';
+        return res.send(JSON.parse(jsonStr));
       },
     );
   },

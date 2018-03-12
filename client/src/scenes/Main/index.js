@@ -65,12 +65,13 @@ class Main extends React.Component {
         <Grid>
           <TopNavBar />
           <TwitterLogin
-            loginUrl="http://localhost:3000/auth/twitter"
+            loginUrl='http://localhost:3000/auth/twitter/verify'
             onFailure={this.onFailed}
             onSuccess={this.onSuccess}
-            requestTokenUrl="http://localhost:3000/auth/twitter/reverse" />
+            requestTokenUrl='http://localhost:3000/auth/twitter/reverse'
+          />
 
-          <p>Authenticated: {this.state.isAuthenticated}</p>
+          <p>Authenticated: {this.state.isAuthenticated && 'Yes'}</p>
           <p>Username: {this.state.user && this.state.user.name}</p>
           <p>Token: {this.state.token}</p>
           <Switch>
