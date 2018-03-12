@@ -42,12 +42,6 @@ router.post(
     if (!req.user) {
       return res.send(401, 'User Not Authenticated');
     }
-
-    // prepare token for API
-    req.auth = {
-      id: req.user.id,
-    };
-
     return next();
   },
   generateToken,

@@ -8,6 +8,11 @@ const createToken = auth =>
 module.exports = {
 
   generateToken: (req, res, next) => {
+    // prepare token for API
+    req.auth = {
+      id: req.user.id,
+    };
+
     req.token = createToken(req.auth);
     return next();
   },
