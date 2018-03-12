@@ -22,7 +22,7 @@ if (process.env.NODE_ENV === 'production') {
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-const passportConfig = require('./passport/twitter-token');
+const passportConfig = require('./passport/twitter-token-strategy');
 
 passportConfig();
 

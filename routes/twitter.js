@@ -2,13 +2,14 @@ const express = require('express');
 const passport = require('passport');
 const request = require('request');
 const config = require('../config');
+const qs = require('querystring');
 
 const router = new express.Router();
-const { generateToken, sendToken } = require('../passport/token');
+const { generateToken, sendToken } = require('../passport/tokenHelper');
 
 router.post(
   '/twitter/verify',
-  (req, res, next) => { 
+  (req, res, next) => {
     request.post(
       {
         url: 'https://api.twitter.com/oauth/access_token?oauth_verifier',
@@ -18,7 +19,7 @@ router.post(
           consumer_secret: config.twitterConsumerSecret,
         },
         form: {
-          oauth_verifier: req.query.oauth_verifier ,
+          oauth_verifier: req.query.oauth_verifier,
         },
       },
       (err, r, body) => {
@@ -26,15 +27,13 @@ router.post(
           return res.send(500, { message: err.message });
         }
 
-        console.log(body);
-        const bodyString = '{ "' + body.replace(/&/g, '", "').replace(/=/g, '": "') + '"}';
-        const parsedBody = JSON.parse(bodyString);
+        const parsedBody = qs.parse(body);
 
-        req.body['oauth_token'] = parsedBody.oauth_token;
-        req.body['oauth_token_secret'] = parsedBody.oauth_token_secret;
-        req.body['user_id'] = parsedBody.user_id;
+        req.body.oauth_token = parsedBody.oauth_token;
+        req.body.oauth_token_secret = parsedBody.oauth_token_secret;
+        req.body.user_id = parsedBody.user_id;
 
-        next();
+        return next();
       },
     );
   },
@@ -49,7 +48,7 @@ router.post(
       id: req.user.id,
     };
 
-    next();
+    return next();
   },
   generateToken,
   sendToken,
@@ -72,8 +71,8 @@ router.post(
           return res.send(500, { message: err.message });
         }
 
-        const jsonStr = '{ "' + body.replace(/&/g, '", "').replace(/=/g, '": "') + '"}';
-        return res.send(JSON.parse(jsonStr));
+        const parsedBody = qs.parse(body);
+        return res.send(parsedBody);
       },
     );
   },
