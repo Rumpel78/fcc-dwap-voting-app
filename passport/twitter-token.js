@@ -9,10 +9,8 @@ module.exports = () => {
       consumerKey: Config.twitterConsumerKey,
       consumerSecret: Config.twitterConsumerSecret,
     },
-    function (token, tokenSecret, profile, done) {
-      User.upsertTwitterUser(token, tokenSecret, profile, function(err, user) {
-        return done(err, user);
-      });
-    }));
+    (token, tokenSecret, profile, done) => {
+      User.upsertTwitterUser(token, tokenSecret, profile, (err, user) => done(err, user));
+    },
+  ));
 };
-

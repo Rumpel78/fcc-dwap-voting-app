@@ -34,14 +34,13 @@ UserSchema.methods.comparePassword = function comparePassword(password, callback
   bcrypt.compare(password, this.password, callback);
 };
 
-UserSchema.statics.upsertTwitterUser = (token, tokenSecret, profile, cb) => {
-  let that = this;
-  return this.findOne({
+UserSchema.statics.upsertTwitterUser = (token, tokenSecret, profile, cb) =>
+  this.findOne({
     'twitterProvider.id': profile.id,
   }, (err, user) => {
     // no user was found, lets create a new one
     if (!user) {
-      let newUser = new that({
+      const newUser = new UserSchema({
         name: profile.displayName,
         twitterProvider: {
           id: profile.id,
@@ -50,17 +49,15 @@ UserSchema.statics.upsertTwitterUser = (token, tokenSecret, profile, cb) => {
         },
       });
 
-      newUser.save((error, savedUser) => {
+      return newUser.save((error, savedUser) => {
         if (error) {
           console.log(error);
         }
         return cb(error, savedUser);
       });
-    } else {
-      return cb(err, user);
     }
+    return cb(err, user);
   });
-};
 
 /**
  * The pre-save hook method.
