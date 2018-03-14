@@ -1,9 +1,9 @@
-import expressJwt from 'express-jwt';
+const expressJwt = require('express-jwt');
 
 const Config = require('../config');
 
 // token handling middleware
-const authenticate = expressJwt({
+module.exports = (req, res) => expressJwt({
   secret: Config.jwtSecret,
   requestProperty: 'auth',
   getToken: (req) => {
@@ -13,5 +13,3 @@ const authenticate = expressJwt({
     return null;
   }
 });
-
-;

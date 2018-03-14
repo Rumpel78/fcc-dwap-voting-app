@@ -28,14 +28,14 @@ passportConfig();
 
 // passport
 // passport local strategies
-// passport.use('twitter-token', require('./passport/twitter'));
 passport.use('local-signup', require('./passport/local-signup'));
 passport.use('local-login', require('./passport/local-login'));
 
 app.use(passport.initialize());
 
 // Inject local use middleware
-// app.use(require('./middleware/jwt-user'));
+app.use(require('./middleware/jwt-user'));
+// app.use(require('./middleware/authJwt'));
 
 // Set up routes
 app.use('/auth', require('./routes/twitter'));
