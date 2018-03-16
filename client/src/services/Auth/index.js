@@ -36,6 +36,34 @@ class Auth {
   static getToken() {
     return localStorage.getItem('token');
   }
+
+  /**
+   * Logs in user with email and password
+   * @param {string} email
+   * @param {string} password
+   * @param {function} callback
+   */
+  static login(email, password, callback) {
+    const formData = `email=${email}&password=${password}`;
+
+    fetch('/auth/login', {
+      method: 'POST',
+      body: formData,
+      headers: {
+        'Accept': 'application/json, application/xml, text/play, text/html, *.*',
+        'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
+      },
+    })
+
+      .then(response => response.json())
+
+      .then((json) => {
+        if (json.success) {
+          this.authenticateUser(json.token);
+        }
+        callback(json);
+      });
+  }
 }
 
 export default Auth;

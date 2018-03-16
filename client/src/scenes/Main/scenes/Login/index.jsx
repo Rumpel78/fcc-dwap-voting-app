@@ -1,11 +1,9 @@
 import 'whatwg-fetch';
 import React from 'react';
 import { Alert, Row } from 'react-bootstrap';
-import TwitterLogin from 'react-twitter-auth';
 import LoginForm from './components/LoginForm';
 import TimeoutRedirectedPage from './components/TimeoutRedirect';
 import Auth from '../../../../services/Auth';
-import TwitterButton from './components/TwitterButton';
 
 class Login extends React.Component {
   constructor(props) {
@@ -32,24 +30,10 @@ class Login extends React.Component {
 
     const email = encodeURIComponent(this.state.user.email);
     const password = encodeURIComponent(this.state.user.password);
-    const formData = `email=${email}&password=${password}`;
 
-    fetch('/auth/login', {
-      method: 'POST',
-      body: formData,
-      headers: {
-        'Accept': 'application/json, application/xml, text/play, text/html, *.*',
-        'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
-      },
-    }).then(response => response.json()).then((json) => {
+    Auth.login(email, password, (json) => {
       if (json.success) {
-        Auth.authenticateUser(json.token);
-        this.setState({
-          success: true,
-          username: json.user.name,
-        });
-        this.props.onSuccess(json.user);
-        if (this.props.onSignedIn) this.props.onSignedIn(json.user);
+        this.loginSuccess(json.user);
       } else {
         const errors = json.errors ? json.errors : {};
         errors.summary = json.message;
@@ -58,6 +42,15 @@ class Login extends React.Component {
         });
       }
     });
+  }
+
+  loginSuccess(user) {
+    this.setState({
+      success: true,
+      username: user.name,
+    });
+    this.props.onSuccess(user);
+    if (this.props.onSignedIn) this.props.onSignedIn(user);
   }
 
   changeUser(event) {
@@ -71,6 +64,19 @@ class Login extends React.Component {
     });
   }
 
+  twitterSuccess = (response) => {
+    response.json().then((user) => {
+      this.loginSuccess(user);
+    });
+  };
+
+  twitterFailed = () => {
+    const errors = {
+      summary: 'Failed to login with twitter',
+    };
+    this.setState({ errors });
+  };
+
   /**
    * Render the component.
    */
@@ -82,24 +88,11 @@ class Login extends React.Component {
             <LoginForm
               onSubmit={this.processForm}
               onChange={this.changeUser}
+              twitterFailed={this.twitterFailed}
+              twitterSuccess={this.twitterSuccess}
               errors={this.state.errors}
               user={this.state.user}
             />
-          </Row>
-          <Row>
-            <center>
-              <h3>Or</h3>
-              <TwitterLogin
-                tag='div'
-                bsStyle='primary'
-                loginUrl='http://localhost:3000/auth/twitter/verify'
-                onFailure={this.onFailed}
-                onSuccess={this.onSuccess}
-                requestTokenUrl='http://localhost:3000/auth/twitter/reverse'
-              >
-                <TwitterButton>Login with Twitter</TwitterButton>
-              </TwitterLogin>
-            </center>
           </Row>
         </div>
       );
