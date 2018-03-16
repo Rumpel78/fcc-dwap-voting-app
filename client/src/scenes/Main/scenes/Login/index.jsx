@@ -1,9 +1,11 @@
 import 'whatwg-fetch';
 import React from 'react';
-import { Alert } from 'react-bootstrap';
+import { Alert, Row } from 'react-bootstrap';
+import TwitterLogin from 'react-twitter-auth';
 import LoginForm from './components/LoginForm';
 import TimeoutRedirectedPage from './components/TimeoutRedirect';
 import Auth from '../../../../services/Auth';
+import TwitterButton from './components/TwitterButton';
 
 class Login extends React.Component {
   constructor(props) {
@@ -39,11 +41,9 @@ class Login extends React.Component {
         'Accept': 'application/json, application/xml, text/play, text/html, *.*',
         'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
       },
-    }).then((response) => {
-      return response.json();
-    }).then((json) => {
+    }).then(response => response.json()).then((json) => {
       if (json.success) {
-        Auth.authenticateUser(json.token, json.user);
+        Auth.authenticateUser(json.token);
         this.setState({
           success: true,
           username: json.user.name,
@@ -77,12 +77,31 @@ class Login extends React.Component {
   render() {
     if (!this.state.success) {
       return (
-        <LoginForm
-          onSubmit={this.processForm}
-          onChange={this.changeUser}
-          errors={this.state.errors}
-          user={this.state.user}
-        />
+        <div>
+          <Row>
+            <LoginForm
+              onSubmit={this.processForm}
+              onChange={this.changeUser}
+              errors={this.state.errors}
+              user={this.state.user}
+            />
+          </Row>
+          <Row>
+            <center>
+              <h3>Or</h3>
+              <TwitterLogin
+                tag='div'
+                bsStyle='primary'
+                loginUrl='http://localhost:3000/auth/twitter/verify'
+                onFailure={this.onFailed}
+                onSuccess={this.onSuccess}
+                requestTokenUrl='http://localhost:3000/auth/twitter/reverse'
+              >
+                <TwitterButton>Login with Twitter</TwitterButton>
+              </TwitterLogin>
+            </center>
+          </Row>
+        </div>
       );
     }
     return <TimeoutRedirectedPage timeout='2000' component={<Alert bsStyle='success'>Hello {this.state.username}! You have successfully logged in!</Alert>} to='/' />;

@@ -6,17 +6,17 @@ const config = require('../config');
  *  No authentication, just add user to request
  */
 module.exports = (req, res, next) => {
-  if (!req.headers.authorization) {
+  if (!req.headers['x-auth-token']) {
     return next();
   }
-  // get the last part from a authorization header string like "bearer token-value"
-  const token = req.headers.authorization.split(' ')[1];
+  // get token from header
+  const token = req.headers['x-auth-token'];
 
   // decode the token using a secret key-phrase
   return jwt.verify(token, config.jwtSecret, (err, decoded) => {
     if (err) { return next(); }
 
-    const userId = decoded.sub;
+    const userId = decoded.id;
 
     // check if a user exists
     return User.findById(userId, (userErr, user) => {
