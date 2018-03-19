@@ -19,10 +19,10 @@ const LoginForm = ({
 
           {errors.summary && <Alert bsStyle='danger'>{errors.summary} </Alert>}
 
-          <FormGroup controlId='formHorizontalEmail' validationState={errors.email && 'error'} >
-            <ControlLabel>Email</ControlLabel>
-            <FormControl name='email' type='email' placeholder='Email' onChange={onChange} value={user.email} />
-            {errors.email && <HelpBlock>{errors.email}</HelpBlock>}
+          <FormGroup controlId='formHorizontalName' validationState={errors.username && 'error'} >
+            <ControlLabel>Username</ControlLabel>
+            <FormControl name='username' type='text' placeholder='Username' onChange={onChange} value={user.username} />
+            {errors.username && <HelpBlock>{errors.username}</HelpBlock>}
           </FormGroup>
 
           <FormGroup controlId='formHorizontalPassword' validationState={errors.password && 'error'}>

@@ -2,7 +2,7 @@ import 'whatwg-fetch';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import PollCreateForm from './components/PollCreateForm';
-import PollApi from '../../services/PollApi';
+import PollApi from '../../../../../../services/PollApi';
 
 class PollCreate extends React.Component {
   constructor(props) {

@@ -10,8 +10,7 @@ class Register extends React.Component {
     this.state = {
       errors: {},
       user: {
-        email: '',
-        name: '',
+        username: '',
         password: '',
       },
     };
@@ -35,10 +34,9 @@ class Register extends React.Component {
     event.preventDefault();
 
     // create a string for an HTTP body message
-    const name = encodeURIComponent(this.state.user.name);
-    const email = encodeURIComponent(this.state.user.email);
+    const username = encodeURIComponent(this.state.user.username);
     const password = encodeURIComponent(this.state.user.password);
-    const formData = `name=${name}&email=${email}&password=${password}`;
+    const formData = `username=${username}&password=${password}`;
 
     // fetch response
     fetch('/auth/signup', {

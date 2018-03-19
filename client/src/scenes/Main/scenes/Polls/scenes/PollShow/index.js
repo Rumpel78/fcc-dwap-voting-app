@@ -4,7 +4,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Row, Col, Table } from 'react-bootstrap';
 import PollPieChart from './components/PollPieChart';
-import PollApi from '../../services/PollApi';
+import PollApi from '../../../../../../services/PollApi';
 import PollOptionRow from './components/PollOptionRow';
 import VotedModal from './components/VotedModal';
 

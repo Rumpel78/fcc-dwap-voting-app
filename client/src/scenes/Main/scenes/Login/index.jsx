@@ -13,11 +13,10 @@ class Login extends React.Component {
     this.state = {
       errors: {},
       user: {
-        email: '',
+        username: '',
         password: '',
       },
       success: false,
-      username: '',
     };
 
     this.processForm = this.processForm.bind(this);
@@ -28,10 +27,10 @@ class Login extends React.Component {
     // prevent default action. in this case, action is the form submission event
     event.preventDefault();
 
-    const email = encodeURIComponent(this.state.user.email);
+    const username = encodeURIComponent(this.state.user.username);
     const password = encodeURIComponent(this.state.user.password);
 
-    Auth.login(email, password, (json) => {
+    Auth.login(username, password, (json) => {
       if (json.success) {
         this.loginSuccess(json.user);
       } else {
@@ -47,7 +46,7 @@ class Login extends React.Component {
   loginSuccess(user) {
     this.setState({
       success: true,
-      username: user.name,
+      user: { username: user.name },
     });
     this.props.onSuccess(user);
     if (this.props.onSignedIn) this.props.onSignedIn(user);

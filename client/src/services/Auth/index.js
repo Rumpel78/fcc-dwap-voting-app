@@ -38,13 +38,13 @@ class Auth {
   }
 
   /**
-   * Logs in user with email and password
-   * @param {string} email
+   * Logs in user with username and password
+   * @param {string} name
    * @param {string} password
    * @param {function} callback
    */
-  static login(email, password, callback) {
-    const formData = `email=${email}&password=${password}`;
+  static login(name, password, callback) {
+    const formData = `username=${name}&password=${password}`;
 
     fetch('/auth/login', {
       method: 'POST',

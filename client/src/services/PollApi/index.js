@@ -1,4 +1,4 @@
-import Auth from '../../../../../../services/Auth';
+import Auth from '../../services/Auth';
 
 class PollApi {
   static GetPoll(id) {

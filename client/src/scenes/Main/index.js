@@ -5,7 +5,6 @@ import React from 'react';
 import TopNavBar from './components/TopNavBar';
 import LogOut from './components/LogOut';
 import Authorization from './components/Authorization';
-
 import Home from './scenes/Home';
 import NotFound from './scenes/NotFound';
 import About from './scenes/About';
@@ -14,7 +13,6 @@ import OnlyForAuth from './scenes/OnlyForAuthTestPage';
 import Login from './scenes/Login';
 import Register from './scenes/Register';
 import Polls from './scenes/Polls';
-import User from '../../services/User';
 
 import './style.css';
 
@@ -38,12 +36,10 @@ class Main extends React.Component {
 
   userLoggedIn(user) {
     this.setState({ user });
-    User.saveUser(user);
   }
 
   userLoggedOut() {
     this.setState({ user: { name: 'Guest' } });
-    User.removeUser();
   }
   render() {
     return (

@@ -3,12 +3,12 @@ const bcrypt = require('bcrypt');
 
 // define the User model schema
 const UserSchema = new mongoose.Schema({
-  email: {
+  username: {
     type: String,
     trim: true,
     index: true,
     unique: true,
-    sparse: true,
+    lowercase: true,
   },
   twitterProvider: {
     type: {
@@ -18,10 +18,6 @@ const UserSchema = new mongoose.Schema({
     select: false,
   },
   password: String,
-  name: {
-    type: String,
-    trim: true,
-  },
 });
 
 UserSchema.statics.upsertTwitterUser = function (token, tokenSecret, profile, cb) {
@@ -32,8 +28,7 @@ UserSchema.statics.upsertTwitterUser = function (token, tokenSecret, profile, cb
     // no user was found, lets create a new one
     if (!user) {
       const newUser = new that({
-        email: profile.emails[0].value,
-        name: profile.username,
+        username: profile.username,
         twitterProvider: {
           id: profile.id,
           token,
