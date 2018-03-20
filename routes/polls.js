@@ -48,6 +48,9 @@ function ValidatePoll(poll) {
   };
 }
 
+/**
+ *  Get all polls
+ */
 router.get('/polls', (req, res) => {
   Poll.find({}, (err, polls) => {
     res.status(200).json({
@@ -57,6 +60,9 @@ router.get('/polls', (req, res) => {
   });
 });
 
+/**
+ * Get poll with id :pollid
+ */
 router.get('/polls/:pollid', (req, res) => {
   Poll.findById(req.params.pollid, (err, poll) => {
     res.status(200).json({
@@ -66,6 +72,9 @@ router.get('/polls/:pollid', (req, res) => {
   });
 });
 
+/**
+ * Vote for poll (:pollid) option :option
+ */
 router.put('/polls/:pollid/:option', (req, res) => {
   Poll.findById(req.params.pollid, (err, poll) => {
     if (err) {
@@ -86,6 +95,9 @@ router.put('/polls/:pollid/:option', (req, res) => {
   });
 });
 
+/**
+ * Create new poll
+ */
 router.post('/polls', (req, res) => {
   const validationResult = ValidatePoll(req.body);
   if (!validationResult.success) {
@@ -98,7 +110,7 @@ router.post('/polls', (req, res) => {
     poll.options.push({ name: req.body.options[i].name, count: 0 });
   }
   if (req.user) {
-    poll.createdBy = req.user.name;
+    poll.createdBy = req.user.username;
   }
 
   return poll.save((err) => {
@@ -112,8 +124,11 @@ router.post('/polls', (req, res) => {
   });
 });
 
+/**
+ * Delete poll with :pollid
+ */
 router.delete('/polls/:pollId', (req, res) => {
-  const currentUserName = req.user ? req.user.name : 'Guest';
+  const currentUserName = req.user ? req.user.username : 'Guest';
   Poll.remove({ _id: req.params.pollId, createdBy: currentUserName }, (err) => {
     if (err) {
       return res.send(err);

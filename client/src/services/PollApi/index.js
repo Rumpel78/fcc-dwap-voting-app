@@ -1,20 +1,6 @@
 import Auth from '../../services/Auth';
 
 class PollApi {
-  static GetPoll(id) {
-    return fetch(`/api/polls/${id}`, {
-      method: 'GET',
-      headers: { Authorization: `bearer ${Auth.getToken()}` },
-    })
-      .then((response) => {
-        if (response.status === 200) {
-          return response.json();
-        }
-        return { };
-      })
-      .then(json => json.poll);
-  }
-
   static Validate(poll) {
     const errors = { options: [] };
     let isValid = true;
@@ -56,10 +42,24 @@ class PollApi {
     };
   }
 
+  static GetPoll(id) {
+    return fetch(`/api/polls/${id}`, {
+      method: 'GET',
+      headers: { 'x-auth-token': Auth.getToken() },
+    })
+      .then((response) => {
+        if (response.status === 200) {
+          return response.json();
+        }
+        return { };
+      })
+      .then(json => json.poll);
+  }
+
   static GetPolls() {
     return fetch('/api/polls', {
       method: 'GET',
-      headers: { Authorization: `bearer ${Auth.getToken()}` },
+      headers: { 'x-auth-token': Auth.getToken() },
     })
       .then((response) => {
         if (response.status === 200) {
@@ -74,7 +74,7 @@ class PollApi {
     return fetch('/api/polls', {
       method: 'POST',
       body: JSON.stringify(poll),
-      headers: { 'Authorization': `bearer ${Auth.getToken()}`, 'Content-Type': 'application/json' },
+      headers: { 'x-auth-token': Auth.getToken(), 'Content-Type': 'application/json' },
     })
       .then((response) => {
         if (response.status === 200) {
@@ -87,7 +87,7 @@ class PollApi {
   static Vote(pollId, optionName) {
     return fetch(`/api/polls/${pollId}/${optionName}`, {
       method: 'PUT',
-      headers: { 'Authorization': `bearer ${Auth.getToken()}`, 'Content-Type': 'application/json' },
+      headers: { 'x-auth-token': Auth.getToken(), 'Content-Type': 'application/json' },
     })
       .then((response) => {
         if (response.status === 200) {
@@ -100,7 +100,7 @@ class PollApi {
   static Delete(pollId) {
     return fetch(`/api/polls/${pollId}`, {
       method: 'DELETE',
-      headers: { 'Authorization': `bearer ${Auth.getToken()}`, 'Content-Type': 'application/json' },
+      headers: { 'x-auth-token': Auth.getToken(), 'Content-Type': 'application/json' },
     })
       .then((response) => {
         if (response.status === 200) {

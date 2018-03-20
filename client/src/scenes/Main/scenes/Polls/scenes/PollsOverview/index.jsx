@@ -46,7 +46,7 @@ class PollsOverview extends React.Component {
 
   showPolls(onlyMine) {
     if (onlyMine) {
-      const polls = this.allPolls.filter(p => p.createdBy === this.props.user.name);
+      const polls = this.allPolls.filter(p => p.createdBy === this.props.user.username);
       this.setState({ polls });
     } else {
       this.setState({ polls: this.allPolls });
@@ -63,7 +63,7 @@ class PollsOverview extends React.Component {
         </ButtonToolbar>
         <br />
         <br />
-        <PollList polls={this.state.polls} onDelete={this.deletePoll} user={this.props.user} />
+        <PollList polls={this.state.polls} onDelete={this.deletePoll} userName={this.props.user.username} />
       </div>
     );
   }

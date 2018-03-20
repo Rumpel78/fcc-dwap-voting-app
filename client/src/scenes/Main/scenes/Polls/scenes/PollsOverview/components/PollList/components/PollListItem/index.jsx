@@ -4,7 +4,7 @@ import React from 'react';
 import { Button, ButtonToolbar } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
-const PollListItem = ({ poll, onDelete, user }) => (
+const PollListItem = ({ poll, onDelete, userName }) => (
   <tr>
     <td>{poll.name}</td>
     <td>{poll.createdBy}</td>
@@ -13,7 +13,7 @@ const PollListItem = ({ poll, onDelete, user }) => (
     <td>
       <ButtonToolbar>
         <Link to={`/polls/${poll._id}`}><Button bsStyle='primary'>Show</Button></Link>&nbsp;
-        { (user.name === poll.createdBy) &&
+        { (userName === poll.createdBy) &&
           <Button bsStyle='danger' onClick={() => onDelete(poll._id)}>Delete</Button>
         }
       </ButtonToolbar>
