@@ -43,7 +43,6 @@ UserSchema.statics.upsertTwitterUser = function (token, tokenSecret, profile, cb
         return cb(error, savedUser);
       });
     }
-    return cb(err, user);
   });
 };
 /**
