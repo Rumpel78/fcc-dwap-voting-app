@@ -20,31 +20,28 @@ const UserSchema = new mongoose.Schema({
   password: String,
 });
 
-UserSchema.statics.upsertTwitterUser = function (token, tokenSecret, profile, cb) {
-  const that = this;
+UserSchema.statics.upsertTwitterUser = function upsert(token, tokenSecret, profile, cb) {
   return this.findOne({
     'twitterProvider.id': profile.id,
-  }, function (err, user) {
-    // no user was found, lets create a new one
-    if (!user) {
-      const newUser = new that({
-        username: profile.username,
-        twitterProvider: {
-          id: profile.id,
-          token,
-          tokenSecret,
-        },
-      });
-
-      newUser.save(function (error, savedUser) {
-        if (error) {
-          console.log(error);
-        }
-        return cb(error, savedUser);
-      });
+  }, (err, user) => {
+    // User found
+    if (user) {
+      return cb(err, user);
     }
+    // no user was found, lets create a new one
+    const newUser = new this({
+      username: profile.username,
+      twitterProvider: {
+        id: profile.id,
+        token,
+        tokenSecret,
+      },
+    });
+    return newUser.save((error, savedUser) =>
+      cb(error, savedUser));
   });
 };
+
 /**
  * Compare the passed password with the value in the database. A model method.
  *
