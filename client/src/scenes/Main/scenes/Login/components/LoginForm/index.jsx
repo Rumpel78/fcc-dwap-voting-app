@@ -4,7 +4,8 @@ import TwitterLogin from 'react-twitter-auth';
 import TwitterButton from '../TwitterButton';
 
 const LoginForm = ({
-  onSubmit,
+  onSignIn,
+  onRegister,
   onChange,
   twitterFailed,
   twitterSuccess,
@@ -14,7 +15,7 @@ const LoginForm = ({
   <div>
     <Row>
       <Col md={4} mdOffset={4}>
-        <Form action='/' onSubmit={onSubmit}>
+        <Form>
           <h2 className='centered'>Please sign in</h2>
 
           {errors.summary && <Alert bsStyle='danger'>{errors.summary} </Alert>}
@@ -32,7 +33,8 @@ const LoginForm = ({
           </FormGroup>
 
           <center>
-            <Button type='submit' bsStyle='success'>Sign in</Button>
+            <Button onClick={onSignIn} bsStyle='success'>Sign in</Button>&nbsp;&nbsp;
+            <Button onClick={onRegister} bsStyle='primary'>Register</Button>
           </center>
         </Form>
       </Col>

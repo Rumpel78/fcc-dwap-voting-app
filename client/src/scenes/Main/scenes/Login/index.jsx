@@ -19,18 +19,33 @@ class Login extends React.Component {
       success: false,
     };
 
-    this.processForm = this.processForm.bind(this);
+    this.onSignIn = this.onSignIn.bind(this);
+    this.onRegister = this.onRegister.bind(this);
     this.changeUser = this.changeUser.bind(this);
   }
 
-  processForm(event) {
-    // prevent default action. in this case, action is the form submission event
-    event.preventDefault();
-
+  onSignIn() {
     const username = encodeURIComponent(this.state.user.username);
     const password = encodeURIComponent(this.state.user.password);
 
     Auth.login(username, password, (json) => {
+      if (json.success) {
+        this.loginSuccess(json.user, json.token);
+      } else {
+        const errors = json.errors ? json.errors : {};
+        errors.summary = json.message;
+        this.setState({
+          errors,
+        });
+      }
+    });
+  }
+
+  onRegister() {
+    const username = encodeURIComponent(this.state.user.username);
+    const password = encodeURIComponent(this.state.user.password);
+
+    Auth.register(username, password, (json) => {
       if (json.success) {
         this.loginSuccess(json.user, json.token);
       } else {
@@ -86,7 +101,8 @@ class Login extends React.Component {
         <div>
           <Row>
             <LoginForm
-              onSubmit={this.processForm}
+              onSignIn={this.onSignIn}
+              onRegister={this.onRegister}
               onChange={this.changeUser}
               twitterFailed={this.twitterFailed}
               twitterSuccess={this.twitterSuccess}

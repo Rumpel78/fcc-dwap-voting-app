@@ -90,6 +90,31 @@ class Auth {
         callback(json);
       });
   }
+
+  static register(name, password, cb) {
+    const formData = `username=${name}&password=${password}`;
+
+    fetch('/auth/signup', {
+      method: 'POST',
+      body: formData,
+      headers: {
+        'Accept': 'application/json, application/xml, text/play, text/html, *.*',
+        'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
+      },
+    })
+
+      .then((response) => {
+        const token = response.headers.get('x-auth-token');
+        if (token) {
+          this.authenticateUser(token);
+        }
+        return response.json();
+      })
+
+      .then((json) => {
+        cb(json);
+      });
+  }
 }
 
 export default Auth;
