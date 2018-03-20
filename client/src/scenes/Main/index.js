@@ -13,6 +13,7 @@ import OnlyForAuth from './scenes/OnlyForAuthTestPage';
 import Login from './scenes/Login';
 import Register from './scenes/Register';
 import Polls from './scenes/Polls';
+import Auth from '../../services/Auth';
 
 import './style.css';
 
@@ -30,8 +31,14 @@ class Main extends React.Component {
     this.userLoggedOut = this.userLoggedOut.bind(this);
   }
 
+  componentDidMount() {
+    Auth.getUser((user) => {
+      this.setState({ user });
+    });
+  }
+
   logout = () => {
-    this.setState({ isAuthenticated: false, token: '', user: null });
+    Auth.deauthenticateUser();
   };
 
   userLoggedIn(user) {
@@ -39,16 +46,15 @@ class Main extends React.Component {
   }
 
   userLoggedOut() {
-    this.setState({ user: { name: 'Guest' } });
+    this.setState({ user: null });
   }
+
   render() {
     return (
       <div>
         <Grid>
           <TopNavBar />
-          <p>Authenticated: {this.state.isAuthenticated && 'Yes'}</p>
-          <p>Username: {this.state.user && this.state.user.name}</p>
-          <p>Token: {this.state.token}</p>
+          <p>Username: {this.state.user && this.state.user.username}</p>
           <Switch>
             <Route exact path='/' render={() => <Home user={this.state.user} />} />
             <Route exact path='/about' component={About} />

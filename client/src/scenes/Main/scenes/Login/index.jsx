@@ -32,7 +32,7 @@ class Login extends React.Component {
 
     Auth.login(username, password, (json) => {
       if (json.success) {
-        this.loginSuccess(json.user);
+        this.loginSuccess(json.user, json.token);
       } else {
         const errors = json.errors ? json.errors : {};
         errors.summary = json.message;
@@ -46,10 +46,9 @@ class Login extends React.Component {
   loginSuccess(user) {
     this.setState({
       success: true,
-      user: { username: user.name },
+      user: { username: user.username },
     });
-    this.props.onSuccess(user);
-    if (this.props.onSignedIn) this.props.onSignedIn(user);
+    if (this.props.onSuccess) this.props.onSuccess(user);
   }
 
   changeUser(event) {
@@ -64,8 +63,10 @@ class Login extends React.Component {
   }
 
   twitterSuccess = (response) => {
+    const token = response.headers.get('x-auth-token');
+    Auth.authenticateUser(token);
     response.json().then((user) => {
-      this.loginSuccess(user);
+      this.loginSuccess(user, token);
     });
   };
 

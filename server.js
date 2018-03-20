@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const passport = require('passport');
 const config = require('./config');
 const morgan = require('morgan');
+const cors = require('cors');
 
 // connect to the database and load models
 require('./models').open(config.dbUri);
@@ -17,6 +18,15 @@ app.use(morgan('combined'));
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static('client/build'));
 }
+
+// enable cors
+const corsOption = {
+  origin: true,
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true,
+  exposedHeaders: [ 'x-auth-token' ],
+};
+app.use(cors(corsOption));
 
 // tell the app to parse HTTP body messages
 app.use(bodyParser.json());

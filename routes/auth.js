@@ -1,5 +1,4 @@
 const express = require('express');
-const validator = require('validator');
 const passport = require('passport');
 
 const router = new express.Router();
@@ -70,6 +69,16 @@ function validateLoginForm(payload) {
   };
 }
 
+router.get('/user', (req, res) => {
+  if (req.user) {
+    res.status(200).json(req.user);
+  }
+  res.status(401).json({
+    success: false,
+    errors: 'Invalid token',
+  });
+});
+
 router.post('/signup', (req, res, next) => {
   const validationResult = validateSignupForm(req.body);
   if (!validationResult.success) {
@@ -133,11 +142,10 @@ router.post('/login', (req, res, next) => {
       });
     }
 
-
+    res.setHeader('x-auth-token', token);
     return res.json({
       success: true,
       message: 'You have successfully logged in!',
-      token,
       user: userData,
     });
   })(req, res, next);

@@ -37,6 +37,29 @@ class Auth {
     return localStorage.getItem('token');
   }
 
+  static getUser(cb) {
+    const token = this.getToken();
+
+    if (!token) {
+      cb(null);
+      return;
+    }
+
+    fetch('/auth/user', {
+      method: 'GET',
+      headers: {
+        'x-auth-token': token,
+      },
+    })
+      .then(response => response.json())
+      .then((json) => {
+        if (json.success) {
+          this.authenticateUser(json.token);
+        }
+        cb(json);
+      });
+  }
+
   /**
    * Logs in user with username and password
    * @param {string} name
@@ -55,12 +78,15 @@ class Auth {
       },
     })
 
-      .then(response => response.json())
+      .then((response) => {
+        const token = response.headers.get('x-auth-token');
+        if (token) {
+          this.authenticateUser(token);
+        }
+        return response.json();
+      })
 
       .then((json) => {
-        if (json.success) {
-          this.authenticateUser(json.token);
-        }
         callback(json);
       });
   }
