@@ -11,8 +11,12 @@ module.exports = () => {
       includeEntities: false,
     },
     (token, tokenSecret, profile, done) => {
-      User.upsertTwitterUser(token, tokenSecret, profile, (err, user) =>
-        done(err, user));
+      User.upsertTwitterUser(token, tokenSecret, profile, (err, user) => {
+        if (err) {
+          return done(err);
+        }
+        done(err, user);
+      });
     },
   ));
 };
