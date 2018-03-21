@@ -31,7 +31,7 @@ class OptionListItem extends React.Component {
           {error && <HelpBlock>{error.message}</HelpBlock>}
         </Col>
         <Col sm={3}>
-          <Button bsSize='xsmall' bsStyle='danger' onClick={this.click} block>Remove</Button>
+          {(option.key > 1) && <Button bsSize='xsmall' bsStyle='danger' onClick={this.click} block>Remove</Button>}
         </Col>
       </FormGroup>
     );

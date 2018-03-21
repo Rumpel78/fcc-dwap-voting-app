@@ -97,6 +97,19 @@ class PollApi {
       });
   }
 
+  static AddOption(pollId, optionName) {
+    return fetch(`/api/polls/${pollId}/${optionName}`, {
+      method: 'POST',
+      headers: { 'x-auth-token': Auth.getToken(), 'Content-Type': 'application/json' },
+    })
+      .then((response) => {
+        if (response.status === 200) {
+          return true;
+        }
+        return false;
+      });
+  }
+
   static Delete(pollId) {
     return fetch(`/api/polls/${pollId}`, {
       method: 'DELETE',

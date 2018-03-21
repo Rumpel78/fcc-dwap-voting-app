@@ -10,7 +10,7 @@ const polls = ({ user }) => (
     <Switch>
       <Route exact path='/polls/create' component={PollCreate} />
       <Route exact path='/polls' render={() => <PollsOverview user={user} />} />
-      <Route path='/polls/:id' component={PollShow} />
+      <Route path='/polls/:id' render={props => <PollShow user={user} {...props} />} />
     </Switch>
   </div>
 );

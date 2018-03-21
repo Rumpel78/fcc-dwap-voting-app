@@ -15,7 +15,7 @@ module.exports = () => {
         if (err) {
           return done(err);
         }
-        done(err, user);
+        return done(err, user);
       });
     },
   ));

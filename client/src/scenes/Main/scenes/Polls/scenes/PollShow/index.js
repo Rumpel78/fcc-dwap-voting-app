@@ -2,10 +2,10 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Row, Col, Table } from 'react-bootstrap';
+import { Row, Col } from 'react-bootstrap';
 import PollPieChart from './components/PollPieChart';
 import PollApi from '../../../../../../services/PollApi';
-import PollOptionRow from './components/PollOptionRow';
+import PollOptionTable from './components/PollOptionTable';
 import VotedModal from './components/VotedModal';
 
 class PollShow extends React.Component {
@@ -18,23 +18,26 @@ class PollShow extends React.Component {
       showModal: false,
       votedOption: '',
     };
-
-    this.vote = this.vote.bind(this);
-    this.modalClose = this.modalClose.bind(this);
   }
 
   componentDidMount() {
     this.refreshPoll();
   }
 
-  refreshPoll() {
+  refreshPoll = () => {
     PollApi.GetPoll(this.props.match.params.id)
       .then((poll) => {
         this.setState({ poll });
       });
   }
 
-  vote(optionName) {
+  optionAdd = (optionName) => {
+    const { _id } = this.state.poll;
+    PollApi.AddOption(_id, optionName)
+      .then(() => this.refreshPoll());
+  }
+
+  vote = (optionName) => {
     this.setState({ disabled: true });
     PollApi.Vote(this.state.poll._id, optionName)
       .then(() => {
@@ -43,12 +46,13 @@ class PollShow extends React.Component {
       });
   }
 
-  modalClose() {
+  modalClose = () => {
     this.setState({ showModal: false });
   }
 
   render() {
     const { poll, disabled } = this.state;
+    const { user } = this.props;
     return (
       <div>
         <Link to='/polls'>&lt;&lt; Back</Link>
@@ -56,19 +60,7 @@ class PollShow extends React.Component {
           <Col md={6}>
             {this.state.poll.name && <h1>{poll.name}</h1> }
             <br />
-            <Table responsive striped bordered>
-              <thead>
-                <tr>
-                  <th>Option</th>
-                  <th>Votes</th>
-                  <th />
-                </tr>
-              </thead>
-              <tbody>
-                {poll.options && poll.options.map(o =>
-                  <PollOptionRow key={`row-${o.name}`} option={o} disabled={disabled} onVote={this.vote} />)}
-              </tbody>
-            </Table>
+            <PollOptionTable user={user} poll={poll} disabled={disabled} onOptionAdd={this.optionAdd} onVote={this.vote} />
           </Col>
           <Col md={6}>
             <PollPieChart poll={poll} />

@@ -63,7 +63,7 @@ class PollsOverview extends React.Component {
         </ButtonToolbar>
         <br />
         <br />
-        <PollList polls={this.state.polls} onDelete={this.deletePoll} userName={this.props.user.username} />
+        <PollList polls={this.state.polls} onDelete={this.deletePoll} user={this.props.user} />
       </div>
     );
   }
