@@ -1,7 +1,6 @@
 import React from 'react';
 import { Table, Button, Form, FormControl, FormGroup, ControlLabel } from 'react-bootstrap';
 import PollOptionRow from './components/PollOptionRow';
-import PollApi from '../../../../../../../../services/PollApi';
 
 class PollOptionTable extends React.Component {
   constructor(props) {

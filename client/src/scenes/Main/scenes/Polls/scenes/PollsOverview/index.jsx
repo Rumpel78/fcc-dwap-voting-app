@@ -14,37 +14,34 @@ class PollsOverview extends React.Component {
       polls: this.allPolls,
       onlyMine: false,
     };
-    this.refreshPolls = this.refreshPolls.bind(this);
-    this.deletePoll = this.deletePoll.bind(this);
-    this.toggleOnlyMinePolls = this.toggleOnlyMinePolls.bind(this);
   }
 
   componentDidMount() {
     this.refreshPolls();
   }
 
-  refreshPolls() {
+  refreshPolls = () => {
     PollApi.GetPolls().then((polls) => {
       this.allPolls = polls;
       this.showPolls(this.state.onlyMine);
     });
   }
 
-  deletePoll(id) {
+  deletePoll = (id) => {
     PollApi.Delete(id)
       .then(() => {
         this.refreshPolls();
       });
   }
 
-  toggleOnlyMinePolls() {
+  toggleOnlyMinePolls = () => {
     let { onlyMine } = this.state;
     onlyMine = !onlyMine;
     this.setState({ onlyMine });
     this.showPolls(onlyMine);
   }
 
-  showPolls(onlyMine) {
+  showPolls = (onlyMine) => {
     if (onlyMine) {
       const polls = this.allPolls.filter(p => p.createdBy === this.props.user.username);
       this.setState({ polls });
