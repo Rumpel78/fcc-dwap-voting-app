@@ -84,6 +84,8 @@ router.put('/polls/:pollid/:option', (req, res) => {
     const option = poll.options.find(o => o.name === req.params.option);
     if (option) {
       option.count += 1;
+    } else if (req.user) {
+      poll.options.push({ name: req.params.option, count: 1 });
     }
 
     return poll.save((err) => {
@@ -94,36 +96,6 @@ router.put('/polls/:pollid/:option', (req, res) => {
     });
   });
 });
-
-/**
- * Update poll with option
- */
-router.post('/polls/:pollid/:option', (req, res) => {
-  Poll.findById(req.params.pollid, (err, poll) => {
-    if (err) {
-      return res.send(err);
-    }
-
-    if (!req.user) {
-      return res.json({ error: 'Must be logged in to add an option' });
-    }
-
-    const option = poll.options.find(o => o.name === req.params.option);
-    if (option) {
-      return res.json({ error: 'Duplicate option' });
-    }
-
-    poll.options.push({ name: req.params.option, count: 0 });
-
-    return poll.save((err) => {
-      if (err) {
-        return res.send(err);
-      }
-      return res.json({ message: 'Poll updated!' });
-    });
-  });
-});
-
 
 /**
  * Create new poll

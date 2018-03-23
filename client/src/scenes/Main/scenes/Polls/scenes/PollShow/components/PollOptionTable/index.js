@@ -34,7 +34,7 @@ class PollOptionTable extends React.Component {
   }
 
   optionAdd = () => {
-    this.props.onOptionAdd(this.state.newOptionName);
+    this.props.onVote(this.state.newOptionName);
     this.setState({ showAddOption: false, newOptionName: '', error: true });
   }
 
@@ -45,7 +45,7 @@ class PollOptionTable extends React.Component {
     const addOptionLine = (
       <Form inline>
         <FormGroup controlId='formInlineOption' validationState={(error && 'error') || 'success'}>
-          <ControlLabel>New Option: </ControlLabel>{' '}
+          <ControlLabel>Option: </ControlLabel>{' '}
           <FormControl
             type='text'
             value={newOptionName}
@@ -54,8 +54,8 @@ class PollOptionTable extends React.Component {
           />
           <FormControl.Feedback />
         </FormGroup>{' '}
-        <Button onClick={this.optionAdd} disabled={error}>Add</Button>{' '}
-        <Button onClick={this.toggleAddOption}>Cancel</Button>
+        <Button onClick={(this.optionAdd)} disabled={error} bsStyle='success'>Vote!</Button>{' '}
+        <Button onClick={this.toggleAddOption} bsStyle='primary'>Cancel</Button>
       </Form>
     );
 
@@ -74,7 +74,7 @@ class PollOptionTable extends React.Component {
               <PollOptionRow key={`row-${o.name}`} option={o} disabled={this.props.disabled} onVote={this.props.onVote} />)}
           </tbody>
         </Table>
-        {user && !showAddOption && <Button onClick={this.toggleAddOption}>Add Option</Button>}
+        {user && !showAddOption && <Button onClick={this.toggleAddOption} bsStyle='primary'>Vote for another option!</Button>}
         {showAddOption && addOptionLine}
       </div>
     );

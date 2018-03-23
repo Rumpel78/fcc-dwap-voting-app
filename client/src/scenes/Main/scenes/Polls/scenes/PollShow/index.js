@@ -60,7 +60,7 @@ class PollShow extends React.Component {
           <Col md={6}>
             {this.state.poll.name && <h1>{poll.name}</h1> }
             <br />
-            <PollOptionTable user={user} poll={poll} disabled={disabled} onOptionAdd={this.optionAdd} onVote={this.vote} />
+            <PollOptionTable user={user} poll={poll} disabled={disabled} onVote={this.vote} />
           </Col>
           <Col md={6}>
             <PollPieChart poll={poll} />
