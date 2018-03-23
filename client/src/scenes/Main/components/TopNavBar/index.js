@@ -12,17 +12,14 @@ const TopNavBar = () =>
     <Navbar inverse fixedTop>
       <Navbar.Header>
         <Navbar.Brand>
-          <Link to='/'> <img src={logo} className='App-logo' alt='logo' />React App</Link>
+          <Link to='/'> <img src={logo} className='App-logo' alt='logo' />VoteHub</Link>
         </Navbar.Brand>
         <Navbar.Toggle />
       </Navbar.Header>
       <Navbar.Collapse>
         <Nav>
-          <LinkContainer to='/about'><NavItem eventKey={1}>About</NavItem></LinkContainer>
-          <LinkContainer to='/broken'><NavItem eventKey={2}>Broken</NavItem></LinkContainer>
-          <LinkContainer to='/docs'><NavItem eventKey={2}>Docs</NavItem></LinkContainer>
           <LinkContainer to='/polls'><NavItem eventKey={2}>Polls</NavItem></LinkContainer>
-          {Auth.isUserAuthenticated() && <LinkContainer to='/onlyForAuth'><NavItem eventKey={2}>Secret</NavItem></LinkContainer>}
+          <NavItem eventKey={2} href='https://www.freecodecamp.org/challenges/build-a-voting-app' target='_blank'>freecodecamp</NavItem>
         </Nav>
         <Nav pullRight>
           {Auth.isUserAuthenticated() && <LinkContainer to='/logout'><NavItem eventKey={3}>Logout</NavItem></LinkContainer>}

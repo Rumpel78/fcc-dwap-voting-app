@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 const Config = require('../config');
 
 const createToken = auth =>
-  jwt.sign({ id: auth.id }, Config.jwtSecret, { expiresIn: 60 * 120 });
+  jwt.sign({ id: auth.id }, Config.jwtSecret);
 
 
 module.exports = {
