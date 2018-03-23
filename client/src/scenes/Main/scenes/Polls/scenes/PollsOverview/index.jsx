@@ -1,3 +1,5 @@
+/* global window */
+
 import 'whatwg-fetch';
 import React from 'react';
 import { Link } from 'react-router-dom';
@@ -34,6 +36,14 @@ class PollsOverview extends React.Component {
       });
   }
 
+  sharePoll = (id, name) => {
+    const currentLocation = window.location.href;
+    const pollLink = `${currentLocation}/${id}`;
+    const url = `https://twitter.com/intent/tweet?url=${pollLink}&text=Give your vote on this Poll: '${name}'&original_referer=${pollLink}`;
+    const encodedUrl = encodeURI(url);
+    window.open(encodedUrl, '_blank', 'location=yes,height=500,width=600,scrollbars=yes,status=yes');
+  }
+
   toggleOnlyMinePolls = () => {
     let { onlyMine } = this.state;
     onlyMine = !onlyMine;
@@ -56,11 +66,11 @@ class PollsOverview extends React.Component {
         <ButtonToolbar>
           <Link to='/polls/create'><Button bsStyle='success'>Create new poll</Button></Link>
           <Button onClick={this.refreshPolls} bsStyle='primary'>Refresh</Button>
-          <Button onClick={this.toggleOnlyMinePolls} active={this.state.onlyMine}>Only mine polls</Button>
+          {this.props.user && <Button onClick={this.toggleOnlyMinePolls} active={this.state.onlyMine}>Only mine polls</Button>}
         </ButtonToolbar>
         <br />
         <br />
-        <PollList polls={this.state.polls} onDelete={this.deletePoll} user={this.props.user} />
+        <PollList polls={this.state.polls} onDelete={this.deletePoll} onShare={this.sharePoll} user={this.props.user} />
       </div>
     );
   }
