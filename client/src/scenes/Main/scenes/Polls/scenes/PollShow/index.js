@@ -15,8 +15,7 @@ class PollShow extends React.Component {
     this.state = {
       poll: {},
       disabled: false,
-      showModal: false,
-      votedOption: '',
+      modalData: { show: false },
     };
   }
 
@@ -40,14 +39,18 @@ class PollShow extends React.Component {
   vote = (optionName) => {
     this.setState({ disabled: true });
     PollApi.Vote(this.state.poll._id, optionName)
-      .then(() => {
+      .then((json) => {
+        if (!json.success) {
+          this.setState({ disabled: false, modalData: { show: true, success: false, message: json.message } });
+        } else {
+          this.setState({ disabled: false, modalData: { show: true, success: true, message: `You have voted for '${optionName}'` } });
+        }
         this.refreshPoll();
-        this.setState({ disabled: false, showModal: true, votedOption: optionName });
       });
   }
 
   modalClose = () => {
-    this.setState({ showModal: false });
+    this.setState({ modalData: { show: false } });
   }
 
   render() {
@@ -66,7 +69,7 @@ class PollShow extends React.Component {
             <PollPieChart poll={poll} />
           </Col>
         </Row>
-        <VotedModal show={this.state.showModal} onClose={this.modalClose} name={this.state.votedOption} />
+        <VotedModal show={this.state.modalData.show} onClose={this.modalClose} data={this.state.modalData} />
       </div>
     );
   }

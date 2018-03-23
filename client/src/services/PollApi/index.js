@@ -91,9 +91,9 @@ class PollApi {
     })
       .then((response) => {
         if (response.status === 200) {
-          return true;
+          return response.json();
         }
-        return false;
+        return { success: false, message: 'Sorry, there was a server error' };
       });
   }
 

@@ -1,14 +1,14 @@
 import React from 'react';
-import { Modal, Button } from 'react-bootstrap';
+import { Modal, Button, Alert } from 'react-bootstrap';
 
-const VotedModal = ({ name, show, onClose }) =>
+const VotedModal = ({ onClose, data }) =>
   (
-    <Modal show={show} onHide={onClose}>
+    <Modal show={data.show} onHide={onClose}>
       <Modal.Header closeButton>
-        <Modal.Title>Voted</Modal.Title>
+        <Modal.Title>{data.success ? 'Voted' : 'Something went wrong...' }</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        You have voted for {name}
+        <Alert bsStyle={data.success ? 'success' : 'danger'}>{data.message}</Alert>
       </Modal.Body>
       <Modal.Footer>
         <Button onClick={onClose}>Close</Button>

@@ -78,9 +78,18 @@ router.get('/polls/:pollid', (req, res) => {
 router.put('/polls/:pollid/:option', (req, res) => {
   Poll.findById(req.params.pollid, (err, poll) => {
     if (err) {
-      return res.send(err);
+      return res.json({ success: false, message: 'Sorry, could not find the poll!' });
     }
 
+    // Check if already voted
+    const id = (req.user && req.user.username) || (req.headers['x-forwarded-for'] || req.connection.remoteAddress);
+
+    if (poll.voted.find(o => o === id)) {
+      return res.json({ success: false, message: 'Sorry, you have already voted!' });
+    }
+    poll.voted.push(id);
+
+    // Increase poll option, or, if authenticated, create option
     const option = poll.options.find(o => o.name === req.params.option);
     if (option) {
       option.count += 1;
@@ -88,11 +97,12 @@ router.put('/polls/:pollid/:option', (req, res) => {
       poll.options.push({ name: req.params.option, count: 1 });
     }
 
+    // Save and return
     return poll.save((err) => {
       if (err) {
-        return res.send(err);
+        return res.json({ success: false, message: 'Sorry, could not place your vote!' });
       }
-      return res.json({ message: 'Poll updated!' });
+      return res.json({ success: true, message: 'Poll updated!' });
     });
   });
 });

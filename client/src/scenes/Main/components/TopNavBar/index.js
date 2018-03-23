@@ -19,7 +19,7 @@ const TopNavBar = () =>
       <Navbar.Collapse>
         <Nav>
           <LinkContainer to='/polls'><NavItem eventKey={2}>Polls</NavItem></LinkContainer>
-          <NavItem eventKey={2} href='https://www.freecodecamp.org/challenges/build-a-voting-app' target='_blank'>freecodecamp</NavItem>
+          <NavItem eventKey={2} href='https://www.freecodecamp.org/challenges/build-a-voting-app' target='_blank'>Open freeCodeCamp</NavItem>
         </Nav>
         <Nav pullRight>
           {Auth.isUserAuthenticated() && <LinkContainer to='/logout'><NavItem eventKey={3}>Logout</NavItem></LinkContainer>}
