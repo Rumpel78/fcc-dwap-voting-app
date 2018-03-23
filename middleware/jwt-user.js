@@ -24,7 +24,7 @@ module.exports = (req, res, next) => {
         return next();
       }
 
-      req.user = user;
+      req.user = { username: user.username };
       return next();
     });
   });

@@ -18,10 +18,8 @@ class Main extends React.Component {
 
     // set the initial component state
     this.state = {
-      user: { isAuthenticated: false, user: null, token: '' },
+      user: null,
     };
-    this.userLoggedIn = this.userLoggedIn.bind(this);
-    this.userLoggedOut = this.userLoggedOut.bind(this);
   }
 
   componentDidMount() {
@@ -34,11 +32,11 @@ class Main extends React.Component {
     Auth.deauthenticateUser();
   };
 
-  userLoggedIn(user) {
+  userLoggedIn = (user) => {
     this.setState({ user });
   }
 
-  userLoggedOut() {
+  userLoggedOut = () => {
     this.setState({ user: null });
   }
 

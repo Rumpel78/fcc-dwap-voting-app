@@ -27,6 +27,6 @@ module.exports = new PassportLocalStrategy({
 
     // create a token string
     const token = jwt.sign(payload, config.jwtSecret);
-    return done(null, token, user);
+    return done(null, token, { username: user.username });
   });
 });
