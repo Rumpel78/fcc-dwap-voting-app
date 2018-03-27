@@ -36,6 +36,85 @@ class Auth {
   static getToken() {
     return localStorage.getItem('token');
   }
+
+  static getUser(cb) {
+    const token = this.getToken();
+
+    if (!token) {
+      cb(null);
+      return;
+    }
+
+    fetch('/auth/user', {
+      method: 'GET',
+      headers: {
+        'x-auth-token': token,
+      },
+    })
+      .then(response => response.json())
+      .then((json) => {
+        if (json.success) {
+          this.authenticateUser(json.token);
+        }
+        cb(json);
+      });
+  }
+
+  /**
+   * Logs in user with username and password
+   * @param {string} name
+   * @param {string} password
+   * @param {function} callback
+   */
+  static login(name, password, callback) {
+    const formData = `username=${name}&password=${password}`;
+
+    fetch('/auth/login', {
+      method: 'POST',
+      body: formData,
+      headers: {
+        'Accept': 'application/json, application/xml, text/play, text/html, *.*',
+        'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
+      },
+    })
+
+      .then((response) => {
+        const token = response.headers.get('x-auth-token');
+        if (token) {
+          this.authenticateUser(token);
+        }
+        return response.json();
+      })
+
+      .then((json) => {
+        callback(json);
+      });
+  }
+
+  static register(name, password, cb) {
+    const formData = `username=${name}&password=${password}`;
+
+    fetch('/auth/signup', {
+      method: 'POST',
+      body: formData,
+      headers: {
+        'Accept': 'application/json, application/xml, text/play, text/html, *.*',
+        'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
+      },
+    })
+
+      .then((response) => {
+        const token = response.headers.get('x-auth-token');
+        if (token) {
+          this.authenticateUser(token);
+        }
+        return response.json();
+      })
+
+      .then((json) => {
+        cb(json);
+      });
+  }
 }
 
 export default Auth;

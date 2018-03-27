@@ -3,14 +3,44 @@ const bcrypt = require('bcrypt');
 
 // define the User model schema
 const UserSchema = new mongoose.Schema({
-  email: {
+  username: {
     type: String,
-    index: { unique: true },
+    trim: true,
+    index: true,
+    unique: true,
+    lowercase: true,
+  },
+  twitterProvider: {
+    type: {
+      id: String,
+      token: String,
+    },
+    select: false,
   },
   password: String,
-  name: String,
 });
 
+UserSchema.statics.upsertTwitterUser = function upsert(token, tokenSecret, profile, cb) {
+  return this.findOne({
+    'twitterProvider.id': profile.id,
+  }, (err, user) => {
+    // User found
+    if (user) {
+      return cb(err, user);
+    }
+    // no user was found, lets create a new one
+    const newUser = new this({
+      username: profile.username,
+      twitterProvider: {
+        id: profile.id,
+        token,
+        tokenSecret,
+      },
+    });
+    return newUser.save((error, savedUser) =>
+      cb(error, savedUser));
+  });
+};
 
 /**
  * Compare the passed password with the value in the database. A model method.
@@ -21,7 +51,6 @@ const UserSchema = new mongoose.Schema({
 UserSchema.methods.comparePassword = function comparePassword(password, callback) {
   bcrypt.compare(password, this.password, callback);
 };
-
 
 /**
  * The pre-save hook method.

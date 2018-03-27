@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const passport = require('passport');
 const config = require('./config');
 const morgan = require('morgan');
+const cors = require('cors');
 
 // connect to the database and load models
 require('./models').open(config.dbUri);
@@ -16,34 +17,42 @@ app.use(morgan('combined'));
 // Express only serves static assets in production
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static('client/build'));
+  app.use(express.static('static'));
 }
 
+// enable cors
+const corsOption = {
+  origin: true,
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true,
+  exposedHeaders: [ 'x-auth-token' ],
+};
+app.use(cors(corsOption));
+
 // tell the app to parse HTTP body messages
-app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-// pass the passport middleware
+app.use(bodyParser.urlencoded({ extended: true }));
+
+// passport
+// passport twitter strategy
+const passportConfig = require('./passport/twitter-token-strategy');
+
+passportConfig();
+
+// passport local strategy
+passport.use('local-signup', require('./passport/local-signup'));
+passport.use('local-login', require('./passport/local-login'));
+
 app.use(passport.initialize());
 
-// load passport strategies
-const localSignupStrategy = require('./passport/local-signup');
-const localLoginStrategy = require('./passport/local-login');
-
-passport.use('local-signup', localSignupStrategy);
-passport.use('local-login', localLoginStrategy);
-
-// pass the authenticaion checker middleware
-const authCheckMiddleware = require('./middleware/auth-check');
-
-app.use('/api', authCheckMiddleware);
+// Inject local use middleware
+app.use(require('./middleware/jwt-user'));
 
 // Set up routes
-const authRoutes = require('./routes/auth');
-const apiRoutes = require('./routes/api');
-const pollRoutes = require('./routes/polls');
-
-app.use('/auth', authRoutes);
-app.use('/api', apiRoutes);
-app.use('/api', pollRoutes);
+app.use('/auth', require('./routes/twitter'));
+app.use('/auth', require('./routes/auth'));
+app.use('/api', require('./routes/api'));
+app.use('/api', require('./routes/polls'));
 
 app.listen(app.get('port'), () => {
   console.log(`Find the server at: http://localhost:${app.get('port')}/`); // eslint-disable-line no-console

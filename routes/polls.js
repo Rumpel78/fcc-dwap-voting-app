@@ -13,14 +13,28 @@ function ValidatePoll(poll) {
     errors.name = 'Please provide a correct name.';
   }
 
-  if (!poll || !poll.createdBy || typeof poll.createdBy !== 'string' || poll.name.trim().createdBy === 0) {
+  if (!poll || !poll.options || !Array.isArray(poll.options) || poll.options.length === 0) {
     isValid = false;
-    errors.name = 'Please provide by whom this poll was created.';
+    errors.name = 'Please provide poll options.';
   }
 
   if (!poll || !poll.options || !Array.isArray(poll.options) || poll.options.length === 0) {
     isValid = false;
-    errors.name = 'Please provide poll options.';
+    errors.options = 'Please provide poll options.';
+  } else {
+    for (let i = 0; i < poll.options.length; i += 1) {
+      if (!poll.options[i].name) {
+        isValid = false;
+        errors.options.splice(i, 0, 'Option may not be empty');
+      } else {
+        for (let j = i + 1; j < poll.options.length; j += 1) {
+          if (poll.options[i].name === poll.options[j].name) {
+            isValid = false;
+            errors.options.splice(i, 0, 'Option defined multiple times');
+          }
+        }
+      }
+    }
   }
 
   if (!isValid) {
@@ -34,6 +48,9 @@ function ValidatePoll(poll) {
   };
 }
 
+/**
+ *  Get all polls
+ */
 router.get('/polls', (req, res) => {
   Poll.find({}, (err, polls) => {
     res.status(200).json({
@@ -43,8 +60,11 @@ router.get('/polls', (req, res) => {
   });
 });
 
+/**
+ * Get poll with id :pollid
+ */
 router.get('/polls/:pollid', (req, res) => {
-  Poll.findById(req.params.pollId, (err, poll) => {
+  Poll.findById(req.params.pollid, (err, poll) => {
     res.status(200).json({
       message: `Poll with id ${req.params.pollId}`,
       poll,
@@ -52,25 +72,44 @@ router.get('/polls/:pollid', (req, res) => {
   });
 });
 
+/**
+ * Vote for poll (:pollid) option :option
+ */
 router.put('/polls/:pollid/:option', (req, res) => {
   Poll.findById(req.params.pollid, (err, poll) => {
     if (err) {
-      return res.send(err);
+      return res.json({ success: false, message: 'Sorry, could not find the poll!' });
     }
-    poll.options.forEach((option) => {
-      if (option.name === req.params.option) {
-        option.count += 1;
-      }
-    });
-    poll.save((err) => {
+
+    // Check if already voted
+    const id = (req.user && req.user.username) || (req.headers['x-forwarded-for'] || req.connection.remoteAddress);
+
+    if (poll.voted.find(o => o === id)) {
+      return res.json({ success: false, message: 'Sorry, you have already voted!' });
+    }
+    poll.voted.push(id);
+
+    // Increase poll option, or, if authenticated, create option
+    const option = poll.options.find(o => o.name === req.params.option);
+    if (option) {
+      option.count += 1;
+    } else if (req.user) {
+      poll.options.push({ name: req.params.option, count: 1 });
+    }
+
+    // Save and return
+    return poll.save((err) => {
       if (err) {
-        return res.send(err);
+        return res.json({ success: false, message: 'Sorry, could not place your vote!' });
       }
-      return res.json({ message: 'Poll updated!' });
+      return res.json({ success: true, message: 'Poll updated!' });
     });
   });
 });
 
+/**
+ * Create new poll
+ */
 router.post('/polls', (req, res) => {
   const validationResult = ValidatePoll(req.body);
   if (!validationResult.success) {
@@ -78,13 +117,15 @@ router.post('/polls', (req, res) => {
   }
   const poll = new Poll();
   poll.name = req.body.name;
-  poll.createdBy = req.body.createdBy;
-  poll.options = req.body.options;
-  poll.options.forEach((element) => {
-    element.count = 0;
-  });
+  poll.createdBy = 'Guest';
+  for (let i = 0; i < req.body.options.length; i += 1) {
+    poll.options.push({ name: req.body.options[i].name, count: 0 });
+  }
+  if (req.user) {
+    poll.createdBy = req.user.username;
+  }
 
-  poll.save((err) => {
+  return poll.save((err) => {
     // saved!
     if (err) {
       return res.send(err);
@@ -95,8 +136,12 @@ router.post('/polls', (req, res) => {
   });
 });
 
+/**
+ * Delete poll with :pollid
+ */
 router.delete('/polls/:pollId', (req, res) => {
-  Poll.remove({ _id: req.params.pollId }, (err) => {
+  const currentUserName = req.user ? req.user.username : 'Guest';
+  Poll.remove({ _id: req.params.pollId, createdBy: currentUserName }, (err) => {
     if (err) {
       return res.send(err);
     }
