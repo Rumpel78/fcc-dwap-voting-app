@@ -45,10 +45,10 @@ const LoginForm = ({
         <TwitterLogin
           tag='div'
           bsStyle='primary'
-          loginUrl='http://localhost:3000/auth/twitter/verify'
+          loginUrl='/auth/twitter/verify'
           onFailure={twitterFailed}
           onSuccess={twitterSuccess}
-          requestTokenUrl='http://localhost:3000/auth/twitter/reverse'
+          requestTokenUrl='/auth/twitter/reverse'
         >
           <TwitterButton>Login with Twitter</TwitterButton>
         </TwitterLogin>
