@@ -1,7 +1,7 @@
 const express = require('express');
 const passport = require('passport');
 const request = require('request');
-const config = require('../config');
+const config = require('../config/config.json');
 const qs = require('querystring');
 
 const router = new express.Router();
@@ -34,7 +34,7 @@ router.post(
         req.body.user_id = parsedBody.user_id;
 
         return next();
-      },
+      }
     );
   },
   passport.authenticate('twitter-token', { session: false }),
@@ -45,7 +45,7 @@ router.post(
     return next();
   },
   generateToken,
-  sendToken,
+  sendToken
 );
 
 router.post(
@@ -67,9 +67,9 @@ router.post(
 
         const parsedBody = qs.parse(body);
         return res.send(parsedBody);
-      },
+      }
     );
-  },
+  }
 );
 
 module.exports = router;

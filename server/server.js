@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const passport = require('passport');
-const config = require('./config');
+const config = require('./config/config.json');
 const morgan = require('morgan');
 const cors = require('cors');
 
@@ -16,7 +16,6 @@ app.use(morgan('combined'));
 
 // Express only serves static assets in production
 if (process.env.NODE_ENV === 'production') {
-  app.use(express.static('client/build'));
   app.use(express.static('static'));
 }
 
@@ -55,5 +54,5 @@ app.use('/api', require('./routes/api'));
 app.use('/api', require('./routes/polls'));
 
 app.listen(app.get('port'), () => {
-  console.log(`Find the server at: http://localhost:${app.get('port')}/`); // eslint-disable-line no-console
+  console.log(`Server running on port ${app.get('port')}`); // eslint-disable-line no-console
 });
