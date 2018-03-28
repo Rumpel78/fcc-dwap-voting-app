@@ -10,7 +10,7 @@
 * **User Story**: As an unauthenticated or authenticated user, I can see the results of polls in chart form. (This could be implemented using Chart.js or Google Charts.)
 * **User Story**: As an authenticated user, if I don't like the options on a poll, I can create a new option.
 
-** Find a demo under: https://dwap.app.rzipa.at **
+**Find a demo under: https://dwap.app.rzipa.at**
 
 ### How to build this project
 
