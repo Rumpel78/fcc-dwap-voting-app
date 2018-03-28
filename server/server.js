@@ -4,6 +4,7 @@ const passport = require('passport');
 const config = require('./config/config.json');
 const morgan = require('morgan');
 const cors = require('cors');
+const path = require('path');
 
 // connect to the database and load models
 require('./models').open(config.dbUri);
@@ -16,8 +17,11 @@ app.use(morgan('combined'));
 
 // Express only serves static assets in production
 if (process.env.NODE_ENV === 'production') {
-  app.use(express.static('static'));
+  app.use(express.static(path.join(__dirname, 'static')));
 }
+app.get('/*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'static', 'index.html'));
+});
 
 // enable cors
 const corsOption = {
