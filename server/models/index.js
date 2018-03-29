@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
-module.exports.open = (uri) => {
-  mongoose.connect(uri);
+module.exports.open = (host) => {
+  mongoose.connect(`mongodb://${host}/fcc_dwap`);
   // plug in the promise library:
   mongoose.Promise = global.Promise;
 
