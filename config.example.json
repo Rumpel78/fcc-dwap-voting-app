@@ -1,6 +1,0 @@
-{
-  "dbUri": "mongodb://localhost/fcc_dwap",
-  "jwtSecret": "SuperSecretKey!",
-  "twitterConsumerKey": "your consumer key",
-  "twitterConsumerSecret": "your consumer secret"
-}
