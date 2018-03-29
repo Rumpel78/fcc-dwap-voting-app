@@ -1,13 +1,13 @@
 const passport = require('passport');
 const TwitterTokenStrategy = require('passport-twitter-token');
 const User = require('mongoose').model('User');
-const Config = require('../config/config.json');
+const Config = require('../config');
 
 module.exports = () => {
   passport.use(new TwitterTokenStrategy(
     {
-      consumerKey: Config.twitterConsumerKey,
-      consumerSecret: Config.twitterConsumerSecret,
+      consumerKey: Config.twitter.consumerKey,
+      consumerSecret: Config.twitter.consumerSecret,
       includeEntities: false,
     },
     (token, tokenSecret, profile, done) => {

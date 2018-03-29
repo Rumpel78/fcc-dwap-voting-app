@@ -1,7 +1,7 @@
 const express = require('express');
 const passport = require('passport');
 const request = require('request');
-const config = require('../config/config.json');
+const config = require('../config');
 const qs = require('querystring');
 
 const router = new express.Router();
@@ -15,8 +15,8 @@ router.post(
         url: 'https://api.twitter.com/oauth/access_token?oauth_verifier',
         oauth: {
           token: req.query.oauth_token,
-          consumer_key: config.twitterConsumerKey,
-          consumer_secret: config.twitterConsumerSecret,
+          consumer_key: config.twitter.consumerKey,
+          consumer_secret: config.twitter.consumerSecret,
         },
         form: {
           oauth_verifier: req.query.oauth_verifier,
@@ -56,8 +56,8 @@ router.post(
         url: 'https://api.twitter.com/oauth/request_token',
         oauth: {
           callback: `${req.protocol}://${req.headers.host}`,
-          consumer_key: config.twitterConsumerKey,
-          consumer_secret: config.twitterConsumerSecret,
+          consumer_key: config.twitter.consumerKey,
+          consumer_secret: config.twitter.consumerSecret,
         },
       },
       (err, r, body) => {

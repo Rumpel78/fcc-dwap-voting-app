@@ -1,16 +1,16 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const passport = require('passport');
-const config = require('./config/config.json');
+const config = require('./config');
 const morgan = require('morgan');
 const cors = require('cors');
 const path = require('path');
 
 // connect to the database and load models
-require('./models').open(config.dbUri);
+require('./models').open(config.dbHost);
 
 const app = express();
-app.set('port', process.env.PORT || 3001);
+app.set('port', config.port);
 
 // Set up logger
 app.use(morgan('combined'));
@@ -18,10 +18,10 @@ app.use(morgan('combined'));
 // Express only serves static assets in production
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, 'static')));
+  app.get('/*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'static', 'index.html'));
+  });
 }
-app.get('/*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'static', 'index.html'));
-});
 
 // enable cors
 const corsOption = {
