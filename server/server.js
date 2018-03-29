@@ -15,14 +15,6 @@ app.set('port', config.port);
 // Set up logger
 app.use(morgan('combined'));
 
-// Express only serves static assets in production
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, 'static')));
-  app.get('/*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'static', 'index.html'));
-  });
-}
-
 // enable cors
 const corsOption = {
   origin: true,
@@ -56,6 +48,14 @@ app.use('/auth', require('./routes/twitter'));
 app.use('/auth', require('./routes/auth'));
 app.use('/api', require('./routes/api'));
 app.use('/api', require('./routes/polls'));
+
+// Express only serves static assets in production
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, 'static')));
+  app.get('/*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'static', 'index.html'));
+  });
+}
 
 app.listen(app.get('port'), () => {
   console.log(`Server running on port ${app.get('port')}`); // eslint-disable-line no-console
