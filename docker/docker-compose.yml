@@ -1,0 +1,22 @@
+version: '2'
+
+services:
+  fcc-dwap-voting-app:
+    build:
+      context: ./fcc-dwap-voting-app
+    restart: always
+    environment:
+      - "NODE_ENV=production"
+      - "PORT=8080"
+      - "DB_HOST=mongo"
+      - "JWT_SECRET=your jwt secret"
+      - "TWITTER_CONSUMER_KEY=your twitter consumer key"
+      - "TWITTER_CONSUMER_SECRET=your twitter consumer secret"
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo
+    restart: always
