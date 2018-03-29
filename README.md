@@ -20,8 +20,8 @@ Prepare installation:
 * Create twitter app on https://apps.twitter.com/ - enter all requested information. Callback URL can be anything, but must be entered
 * Clone this repository `git clone https://github.com/Rumpel78/fcc-dwap-voting-app.git`
 * Create docker-compose.yml `vim docker-compose.yml`
-* Fill in you Twitter Consumer Key and Consumer Secret
 * Enter a jwt secret (15 chars)
+* Fill in you Twitter Consumer Key and Consumer Secret
 * Start container with `docker-compose up -d`
 * Open browser on http://localhost:8080
 * To stop enter `docker-compose down`
@@ -38,7 +38,7 @@ services:
     environment:
       - "NODE_ENV=production"
       - "PORT=8080"
-      - "DB_HOST=mongodb://mongo/fcc_dwap"
+      - "DB_HOST=mongo"
       - "JWT_SECRET=your jwt secret"
       - "TWITTER_CONSUMER_KEY=your twitter consumer key"
       - "TWITTER_CONSUMER_SECRET=your twitter consumer secret"
