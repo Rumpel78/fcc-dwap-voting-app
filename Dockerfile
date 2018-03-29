@@ -6,7 +6,6 @@ COPY ./server/package.json /usr/src/server/
 COPY ./server/yarn.lock /usr/src/server/
 RUN yarn --pure-lockfile
 COPY ./server/ /usr/src/server/
-COPY ./config.json /usr/src/server/config
 
 RUN mkdir -p /usr/src/client
 WORKDIR /usr/src/client
