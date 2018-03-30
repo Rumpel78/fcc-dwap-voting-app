@@ -5,6 +5,7 @@ import React from 'react';
 import TopNavBar from './components/TopNavBar';
 import LogOut from './components/LogOut';
 import Home from './scenes/Home';
+import About from './scenes/About';
 import NotFound from './scenes/NotFound';
 import Login from './scenes/Login';
 import Polls from './scenes/Polls';
@@ -47,6 +48,7 @@ class Main extends React.Component {
           <TopNavBar />
           <Switch>
             <Route exact path='/' render={() => <Home user={this.state.user} />} />
+            <Route path='/about' component={About} />
             <Route path='/polls' render={() => <Polls user={this.state.user} />} />
             <Route exact path='/login' render={() => <Login onSuccess={this.userLoggedIn} />} />
             <Route exact path='/logout' render={() => <LogOut onSuccess={this.userLoggedOut} />} />
