@@ -3,7 +3,6 @@ import { LinkContainer } from 'react-router-bootstrap';
 import { Link } from 'react-router-dom';
 import React from 'react';
 import logo from './logo.svg';
-import './logo.css';
 import Auth from '../../../../services/Auth';
 
 // const AuthFilter = Authorization([ 'manger', 'admin' ]);
