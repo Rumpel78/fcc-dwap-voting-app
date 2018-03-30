@@ -1,0 +1,26 @@
+svg {
+  width: 100px;
+  border-radius: 50%;
+  background:yellowgreen; 
+  transform: rotate(-90deg);
+}
+ 
+circle {
+  fill: none;
+  stroke-width: 32;
+  r: 16;
+  cx: 16;
+  cy: 16;
+}
+ 
+circle.first {
+  stroke: deeppink;
+}
+ 
+circle.second {
+  stroke: #fb3;
+}
+  
+circle.third {
+  stroke: black;
+}
