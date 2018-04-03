@@ -7,7 +7,7 @@ const cors = require('cors');
 const path = require('path');
 
 // connect to the database and load models
-require('./models').open(config.dbHost);
+require('./models').open(config.dbHost, config.appName);
 
 const app = express();
 app.set('port', config.port);
@@ -46,7 +46,6 @@ app.use(require('./middleware/jwt-user'));
 // Set up routes
 app.use('/auth', require('./routes/twitter'));
 app.use('/auth', require('./routes/auth'));
-app.use('/api', require('./routes/api'));
 app.use('/api', require('./routes/polls'));
 
 // Express only serves static assets in production
