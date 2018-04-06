@@ -33,7 +33,7 @@ const LoginForm = ({
           </FormGroup>
 
           <center>
-            <Button onClick={onSignIn} bsStyle='success'>Sign in</Button>&nbsp;&nbsp;
+            <Button onClick={onSignIn} type="submit" bsStyle='success'>Sign in</Button>&nbsp;&nbsp;
             <Button onClick={onRegister} bsStyle='primary'>Register</Button>
           </center>
         </Form>
