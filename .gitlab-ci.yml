@@ -2,6 +2,10 @@
 # Official docker image.
 image: docker:latest
 
+stages:
+  - build
+  - deploy
+
 services:
   - docker:dind
 
@@ -21,5 +25,25 @@ build:
   script:
     - docker build --pull -t "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG" .
     - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG"
+  except:
+    - master
+
+deploy-master:
+  stage: deploy
+  script:
+    - echo "Deploy to production server"
+  environment:
+    name: TestEnv
+    url: https://app.rzipa.at
+  only:
+    - master
+
+deploy:
+  stage: deploy
+  script:
+    - echo "Deploy to dev server"
+  environment:
+    name: TestEnv
+    url: https://dev.app.rzipa.at
   except:
     - master
