@@ -52,7 +52,6 @@ router.post(
   '/twitter/reverse',
   (req, res) => {
     const callbackUrl = `${req.protocol}://${req.headers.host}${config.basePath}/twitter/callback`;
-    console.log(callbackUrl);
     request.post(
       {
         url: 'https://api.twitter.com/oauth/request_token',
