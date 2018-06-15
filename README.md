@@ -1,4 +1,4 @@
-## [FreeCodeCamp Dynamic Web Application Projects](https://www.freecodecamp.org) / [Build a Voting App](https://www.freecodecamp.org/challenges/build-a-voting-app)
+# [FreeCodeCamp Dynamic Web Application Projects](https://www.freecodecamp.org) / [Build a Voting App](https://www.freecodecamp.org/challenges/build-a-voting-app)
 
 * **Objective**: Build a full stack JavaScript app that is functionally similar to this: https://fcc-voting-arthow4n.herokuapp.com/ and deploy it to Heroku.
 * **User Story**: As an authenticated user, I can keep my polls and come back later to access them.
@@ -12,21 +12,28 @@
 
 **Find a demo under: https://dwap.app.rzipa.at**
 
-### How to build this project
+## How to build this project
 
 Easiest way to build and run this app is to use **docker-compose**:
 
 Prepare installation:
-* Create twitter app on https://apps.twitter.com/ - enter all requested information. Callback URL can be anything, but must be entered
-* Clone this repository `git clone https://github.com/Rumpel78/fcc-dwap-voting-app.git`
-* Create docker-compose.yml `vim docker-compose.yml`
+* Create twitter app on https://apps.twitter.com/ - enter all requested information. Callback URL should be your host + '/twitter/callback'
+  For example: http://localhost:8080/voting/twitter/callback
+* Clone this repository `git clone https://gitlab.com/rumpel_freecodecamp/dwap_Voting_App.git`
+* Create docker-compose.yml `vim docker-compose.yml` or use provided file under folder "docker"
 * Enter a jwt secret (15 chars)
 * Fill in you Twitter Consumer Key and Consumer Secret
 * Start container with `docker-compose up -d`
-* Open browser on http://localhost:8080
+* Open browser on http://localhost:8080/voting
 * To stop enter `docker-compose down`
 
-Sample docker-compose.yml:
+## Webserver url path
+
+This app configured to be shown und the url path "/voting". If you want to install this app under the webroot, remove the environment 
+variable "BASEPATH" and remove the "website" line from the client package.json.
+For installing under another basepath adjust those two lines.
+
+## Sample docker-compose.yml:
 ```
 version: '2'
 
@@ -42,6 +49,7 @@ services:
       - "JWT_SECRET=your jwt secret"
       - "TWITTER_CONSUMER_KEY=your twitter consumer key"
       - "TWITTER_CONSUMER_SECRET=your twitter consumer secret"
+	  - "BASEPATH=/voting"
     ports:
       - "8080:8080"
     depends_on:

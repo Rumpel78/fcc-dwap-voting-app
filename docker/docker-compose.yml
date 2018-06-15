@@ -12,7 +12,7 @@ services:
       - "JWT_SECRET=your jwt secret"
       - "TWITTER_CONSUMER_KEY=your twitter consumer key"
       - "TWITTER_CONSUMER_SECRET=your twitter consumer secret"
-      - "REACT_APP_BASEPATH="
+      - "BASEPATH=/voting"
     ports:
       - "8080:8080"
     depends_on:
