@@ -2,6 +2,7 @@ import { Button, ControlLabel, FormGroup, FormControl, Col, Form, HelpBlock, Ale
 import React from 'react';
 import TwitterLogin from 'react-twitter-auth';
 import TwitterButton from '../TwitterButton';
+import config from '../../../../../../config';
 
 const LoginForm = ({
   onSignIn,
@@ -45,10 +46,10 @@ const LoginForm = ({
         <TwitterLogin
           tag='div'
           bsStyle='primary'
-          loginUrl='/auth/twitter/verify'
+          loginUrl= {`${config.basePath}/auth/twitter/verify`}
           onFailure={twitterFailed}
           onSuccess={twitterSuccess}
-          requestTokenUrl='/auth/twitter/reverse'
+          requestTokenUrl={`${config.basePath}/auth/twitter/reverse`}
         >
           <TwitterButton>Login with Twitter</TwitterButton>
         </TwitterLogin>
