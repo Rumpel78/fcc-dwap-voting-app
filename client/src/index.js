@@ -5,11 +5,14 @@ import 'bootstrap/dist/css/bootstrap.css';
 
 import Main from './scenes/Main';
 import registerServiceWorker from './registerServiceWorker';
+import config from './config';
+
+console.log('public url: ', process.env.PUBLIC_URL)
 
 ReactDOM.render(
-  <BrowserRouter>
+  <BrowserRouter basename={config.basePath}>
     <Main />
   </BrowserRouter>
   , document.getElementById('root'),
 );
-registerServiceWorker();
+//registerServiceWorker();

@@ -55,7 +55,7 @@ router.post(
       {
         url: 'https://api.twitter.com/oauth/request_token',
         oauth: {
-          callback: `${req.protocol}://${req.headers.host}`,
+          callback: `${req.protocol}://${req.headers.host}/twitter/callback`,
           consumer_key: config.twitter.consumerKey,
           consumer_secret: config.twitter.consumerSecret,
         },

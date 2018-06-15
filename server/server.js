@@ -37,21 +37,23 @@ passportConfig();
 // passport local strategy
 passport.use('local-signup', require('./passport/local-signup'));
 passport.use('local-login', require('./passport/local-login'));
-
 app.use(passport.initialize());
 
+const mainRouter = new express.Router();
+app.use(config.basePath, mainRouter);
+
 // Inject local use middleware
-app.use(require('./middleware/jwt-user'));
+mainRouter.use(require('./middleware/jwt-user'));
 
 // Set up routes
-app.use('/auth', require('./routes/twitter'));
-app.use('/auth', require('./routes/auth'));
-app.use('/api', require('./routes/polls'));
+mainRouter.use('/auth', require('./routes/twitter'));
+mainRouter.use('/auth', require('./routes/auth'));
+mainRouter.use('/api', require('./routes/polls'));
 
 // Express only serves static assets in production
 if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, 'static')));
-  app.get('/*', (req, res) => {
+  mainRouter.use(express.static(path.join(__dirname, 'static')));
+  mainRouter.get('/*', (req, res) => {
     res.sendFile(path.join(__dirname, 'static', 'index.html'));
   });
 }

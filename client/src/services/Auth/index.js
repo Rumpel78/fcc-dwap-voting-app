@@ -1,5 +1,7 @@
 /* global localStorage */
 
+import config from '../../config';
+
 class Auth {
   /**
      * Authenticate a user. Save a token string in Local Storage
@@ -45,7 +47,7 @@ class Auth {
       return;
     }
 
-    fetch('/auth/user', {
+    fetch(`${config.basePath}/auth/user`, {
       method: 'GET',
       headers: {
         'x-auth-token': token,
@@ -69,7 +71,7 @@ class Auth {
   static login(name, password, callback) {
     const formData = `username=${name}&password=${password}`;
 
-    fetch('/auth/login', {
+    fetch(`${config.basePath}/auth/login`, {
       method: 'POST',
       body: formData,
       headers: {
@@ -94,7 +96,7 @@ class Auth {
   static register(name, password, cb) {
     const formData = `username=${name}&password=${password}`;
 
-    fetch('/auth/signup', {
+    fetch(`${config.basePath}/auth/signup`, {
       method: 'POST',
       body: formData,
       headers: {
