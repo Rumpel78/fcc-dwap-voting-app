@@ -18,7 +18,8 @@
                 "--nolazy"
             ],
             "env": {
-                "NODE_ENV": "development"
+                "NODE_ENV": "production",
+                "BASEPATH": "/voting",
             },
             //"externalConsole": false,
             "sourceMaps": false,

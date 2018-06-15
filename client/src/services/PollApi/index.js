@@ -1,4 +1,5 @@
 import Auth from '../../services/Auth';
+import config from '../../config';
 
 class PollApi {
   static Validate(poll) {
@@ -43,7 +44,7 @@ class PollApi {
   }
 
   static GetPoll(id) {
-    return fetch(`/api/polls/${id}`, {
+    return fetch(`${config.basePath}/api/polls/${id}`, {
       method: 'GET',
       headers: { 'x-auth-token': Auth.getToken() },
     })
@@ -57,7 +58,7 @@ class PollApi {
   }
 
   static GetPolls() {
-    return fetch('/api/polls', {
+    return fetch(`${config.basePath}/api/polls`, {
       method: 'GET',
       headers: { 'x-auth-token': Auth.getToken() },
     })
@@ -71,7 +72,7 @@ class PollApi {
   }
 
   static CreatePoll(poll) {
-    return fetch('/api/polls', {
+    return fetch(`${config.basePath}/api/polls`, {
       method: 'POST',
       body: JSON.stringify(poll),
       headers: { 'x-auth-token': Auth.getToken(), 'Content-Type': 'application/json' },
@@ -85,7 +86,7 @@ class PollApi {
   }
 
   static Vote(pollId, optionName) {
-    return fetch(`/api/polls/${pollId}/${optionName}`, {
+    return fetch(`${config.basePath}/api/polls/${pollId}/${optionName}`, {
       method: 'PUT',
       headers: { 'x-auth-token': Auth.getToken(), 'Content-Type': 'application/json' },
     })
@@ -98,7 +99,7 @@ class PollApi {
   }
 
   static AddOption(pollId, optionName) {
-    return fetch(`/api/polls/${pollId}/${optionName}`, {
+    return fetch(`${config.basePath}/api/polls/${pollId}/${optionName}`, {
       method: 'POST',
       headers: { 'x-auth-token': Auth.getToken(), 'Content-Type': 'application/json' },
     })
@@ -111,7 +112,7 @@ class PollApi {
   }
 
   static Delete(pollId) {
-    return fetch(`/api/polls/${pollId}`, {
+    return fetch(`${config.basePath}/api/polls/${pollId}`, {
       method: 'DELETE',
       headers: { 'x-auth-token': Auth.getToken(), 'Content-Type': 'application/json' },
     })
