@@ -51,11 +51,13 @@ router.post(
 router.post(
   '/twitter/reverse',
   (req, res) => {
+    const callbackUrl = `${req.protocol}://${req.headers.host}${config.basePath}/twitter/callback`;
+    console.log(callbackUrl);
     request.post(
       {
         url: 'https://api.twitter.com/oauth/request_token',
         oauth: {
-          callback: `${req.protocol}://${req.headers.host}${config.basePath}/twitter/callback`,
+          callback: callbackUrl,
           consumer_key: config.twitter.consumerKey,
           consumer_secret: config.twitter.consumerSecret,
         },
