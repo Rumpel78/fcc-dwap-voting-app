@@ -1,5 +1,5 @@
 require('dotenv').load();
 
 const config = {};
-config.basePath = '/voting';
+config.basePath = '';
 module.exports = config;
